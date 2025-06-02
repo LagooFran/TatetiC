@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1748876895 source:/home/fran/Documentos/GitHub/TatetiC/TatetiC/main.c
+	<stdio.h>
+	<stdlib.h>
+
