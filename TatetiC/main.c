@@ -8,7 +8,7 @@ int main()
     ///Menu para tateti
     while(salir!=1){
         printf("TatetiC!\n\n");
-        printf("1.Comenzar a jugar\n2.Ver puntuaciones anteriores\n3.Salir\n");
+        printf("1.Comenzar a jugar\n2.Ver puntuaciones de grupo\n3.Salir\n");
         scanf("%d", &seleccion);
 
 
