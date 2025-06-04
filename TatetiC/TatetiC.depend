@@ -3,3 +3,33 @@
 	<stdio.h>
 	<stdlib.h>
 
+1749063366 source:/home/franpc/Documentos/GitHub/TatetiC/TatetiC/main.c
+	"UtilidadesTateti.h"
+	"AlgoritmoJugador.h"
+
+1749063422 /home/franpc/Documentos/GitHub/TatetiC/TatetiC/UtilidadesTateti.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	"Lista.h"
+
+1749057084 source:/home/franpc/Documentos/GitHub/TatetiC/TatetiC/UtilidadesTateti.c
+	"UtilidadesTateti.h"
+
+1749053142 /home/franpc/Documentos/GitHub/TatetiC/TatetiC/Lista.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1749053127 source:/home/franpc/Documentos/GitHub/TatetiC/TatetiC/Lista.c
+	"Lista.h"
+
+1749063087 source:/home/franpc/Documentos/GitHub/TatetiC/TatetiC/AlgoritmoJugador.c
+	"AlgoritmoJugador.h"
+
+1749063386 /home/franpc/Documentos/GitHub/TatetiC/TatetiC/AlgoritmoJugador.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
