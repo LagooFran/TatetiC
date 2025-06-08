@@ -30,5 +30,7 @@ void ReiniciarTablero(char[][TAMALTO], int, int);
 int EmpezarPartida(char [][TAMALTO], int, int);
 void RandomizarLista(tLista *);
 void RegistrarMovimientoJugador(char [][TAMALTO], int, int, char);
+void EscribirTablero(char [][TAMALTO], int, int, char);
+int CasilleroVacio(char [][TAMALTO], int, int);
 
 #endif // UTILIDADESTATETI_H_INCLUDED

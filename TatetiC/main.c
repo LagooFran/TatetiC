@@ -50,30 +50,30 @@ int main()
 
         switch(seleccion){
             case 1:
-                system("clear");
+                system("cls");
                 ///cargo los datos del grupo en struct
-                printf("Ingrese el nombre del grupo\n");
+                printf("Ingrese el nombre del grupo: ");
                 scanf(" %s", pGrup->nombreGrupo);
                 pGrup->totalPuntos = 0;
 
                 ///el struct grupo contiene una lista de jugadores
-                printf("Ingrese la cantidad de jugadores\n");
+                printf("\nIngrese la cantidad de jugadores: ");
                 scanf(" %d", &pGrup->cantJugadores);
-                printf("Carga de jugadores\n");
+                printf("\nCarga de jugadores:\n");
                 CrearLista(pListaJug);
 
                 ///cargo una lista auxiliar de jugadores
                 for(int i = 0; i<pGrup->cantJugadores; i++){
-                    printf("Ingrese el nombre del jugador %d\n", i+1);
+                    printf("Ingrese el nombre del jugador %d: ", i+1);
                     scanf(" %s", pJug->nombre);
                     pJug->puntos = 0;
                     PonerAlFinal(pListaJug, pJug, sizeof(jugador));
                 }
-
+                system("cls");
                 ///Una vez los jugadores estan cargados debo randomizar el orden en el que jugaran.
                 RandomizarLista(pListaJug);
                 ///muestro el orden de los jugadores
-                printf("Orden de juego: \n");
+                printf("\n\nOrden de juego: \n");
                 RecorrerLista(pListaJug, MostrarJugador, sizeof(jugador));
 
                 ///empiezo el loop de juego
@@ -88,7 +88,7 @@ int main()
                     }
                     else{
                         jugadorChar = 'X';
-                        maquinaChar = '0';
+                        maquinaChar = 'O';
                     }
 
                     printf("Jugador: %s, %c\n", pJug->nombre, jugadorChar);
@@ -99,7 +99,8 @@ int main()
                         ///despues de cada movimiento compruebo si hay un ganador o empate.
                         if(turno == 0){
                             ///juega la maquina
-                            SeleccionarMejorMovimiento(tablero, TAMLARGO, TAMALTO, maquinaChar);
+                            printf("Movimiento de la maquina: \n");
+                            SeleccionarMejorMovimiento(tablero, TAMLARGO, TAMALTO, maquinaChar, jugadorChar);
                             ///cambio el turno para que luego juegue el jugador
                             turno = 1;
                         }
@@ -109,7 +110,7 @@ int main()
                             ///cambio el turno pra que luego juegue la maquina.
                             turno = 0;
                         }
-
+                        MostrarTablero3x3(tablero);
                         ganador = Ganador(tablero, TAMLARGO, TAMALTO);
 
                     }

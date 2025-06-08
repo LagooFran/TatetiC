@@ -9,5 +9,5 @@
 
 
 int Ganador(char[][TAMALTO], int, int);
-void SeleccionarMejorMovimiento(char [][TAMALTO], int, int, char);
+void SeleccionarMejorMovimiento(char [][TAMALTO], int, int, char, char);
 #endif // ALGORITMOJUGADOR_H_INCLUDED

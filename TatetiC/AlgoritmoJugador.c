@@ -1,21 +1,19 @@
 #include "AlgoritmoJugador.h"
-
+#include "UtilidadesTateti.h"
 
 int Ganador(char tablero[][TAMALTO], int filas, int columnas){ ///retorna 1 = si gano la O |-1 = si gano la X | 0 = no hay ganador todavia | 2 = empate
 
-    int x, o;
+    int x=0, o=0, j, i;
     ///recorro filas
-    x = 0;
-    o = 0;
-    for(int i = 0; i < filas; i++){
-        for(int j = 0; j < columnas; j++){
-            printf("%c", tablero[i][j]);
+    for(i = 0; i < filas; i++){
+        for(j = 0; j < columnas; j++){
+            //printf("%c", tablero[i][j]);
             if(tablero[i][j] == 'X'){
-                printf("Suma X\n");
+                //printf("Suma X\n");
                 x ++;
             }
             else if(tablero[i][j] == 'O'){
-                printf("Suma O\n");
+                //printf("Suma O\n");
                 o ++;
             }
 
@@ -34,8 +32,8 @@ int Ganador(char tablero[][TAMALTO], int filas, int columnas){ ///retorna 1 = si
     x = 0;
     o = 0;
     ///recorro columnas
-    for(int i = 0; i < filas; i++){
-        for(int j = 0; j < columnas; j++){
+    for(i = 0; i < filas; i++){
+        for(j = 0; j < columnas; j++){
             if(tablero[j][i] == 'X'){
                 x ++;
             }
@@ -55,7 +53,7 @@ int Ganador(char tablero[][TAMALTO], int filas, int columnas){ ///retorna 1 = si
     }
 
     ///recorro diagonal principal
-    for(int i = 0; i < filas; i++){
+    for(i = 0; i < filas; i++){
         if(tablero[i][i] == 'X'){
             x ++;
         }
@@ -76,14 +74,16 @@ int Ganador(char tablero[][TAMALTO], int filas, int columnas){ ///retorna 1 = si
     o = 0;
 
     ///recorro diagonal inversa
-    for(int i = 3; i > filas; i--){
-        if(tablero[i][i] == 'X'){
-            x ++;
+    j = columnas;
+    for(i = 0; i < filas; i++){
+        j--;
+            if(tablero[i][j] == 'X'){
+                x ++;
+            }
+            else if(tablero[i][j] == 'O'){
+                o ++;
+            }
         }
-        else if(tablero[i][i] == 'O'){
-            o ++;
-        }
-
 
         if(x == 3){
             return -1;
@@ -91,7 +91,6 @@ int Ganador(char tablero[][TAMALTO], int filas, int columnas){ ///retorna 1 = si
         else if(o == 3){
             return 1;
         }
-    }
 
     x = 0;
     o = 0;
@@ -109,10 +108,55 @@ int Ganador(char tablero[][TAMALTO], int filas, int columnas){ ///retorna 1 = si
     return 2; ///Empate
 }
 
-void SeleccionarMejorMovimiento(char tablero[][TAMALTO], int filas, int columnas, char maquinaChar){
-///elige el mejor movimiento y pone un "maquinaChar" en el lugar correspondiente.
-///si el medio esta libre elige ese movimiento.
-///si el jugador esta por ganar elige el movimiento de bloqueo.
-///sino elige movimientos al azar priorizando filas donde tenga ya casilleros ocupados.
 
+int encontrarJugadaGanadora(char tablero[3][3], int* fil, int* col, char caracter) {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            if (CasilleroVacio(tablero, i, j)) {
+                tablero[i][j] = caracter; ///Reemplazo con el caracter y verifico si hay un ganador
+                if (Ganador(tablero, 3, 3) == 1 || Ganador(tablero,3,3) == -1) { ///Si hay un ganador, significa que ese movimiento permite ganar
+                    *fil = i;
+                    *col = j;
+                    tablero[i][j] = ' '; /// Revierto
+                    return 1;
+                }
+                tablero[i][j] = ' '; ///Revierto
+            }
+        }
+    }
+    return 0;
+}
+
+
+void SeleccionarMejorMovimiento(char tablero[][TAMALTO], int filas, int columnas, char maquinaChar, char jugadorChar){
+    int fil, col;
+
+    ///si el medio esta libre elige ese movimiento.
+    if (CasilleroVacio(tablero,1,1)){
+        EscribirTablero(tablero, 1, 1, maquinaChar);
+        return;
+    }
+
+    ///si la maquina puede ganar elige ese movimiento.
+    if (encontrarJugadaGanadora(tablero, &fil, &col, maquinaChar) == 1){
+        EscribirTablero(tablero, fil, col, maquinaChar);
+        return;
+    }
+
+    ///si el jugador esta por ganar elige el movimiento de bloqueo.
+    if (encontrarJugadaGanadora(tablero, &fil, &col, jugadorChar) == 1){
+        EscribirTablero(tablero, fil, col, maquinaChar);
+        return;
+    }
+
+    ///Elige un movimiento al azar.
+    srand(time(NULL));
+    while (1) {
+        fil = rand() % 3;
+        col = rand() % 3;
+        if (CasilleroVacio(tablero, fil, col)) {
+            EscribirTablero(tablero, fil, col, maquinaChar);
+            return;
+        }
+    }
 }

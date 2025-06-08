@@ -33,3 +33,34 @@
 	<stdlib.h>
 	<string.h>
 
+1749369784 source:c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\algoritmojugador.c
+	"AlgoritmoJugador.h"
+	"UtilidadesTateti.h"
+
+1749366507 c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\algoritmojugador.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1749063772 source:c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\lista.c
+	"Lista.h"
+
+1749063772 c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\lista.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1749368579 source:c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\main.c
+	"UtilidadesTateti.h"
+	"AlgoritmoJugador.h"
+
+1749367381 c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\utilidadestateti.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	"Lista.h"
+
+1749368579 source:c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\utilidadestateti.c
+	"UtilidadesTateti.h"
+
