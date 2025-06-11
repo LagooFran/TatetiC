@@ -1,6 +1,7 @@
 #include "UtilidadesTateti.h"
 #include "AlgoritmoJugador.h"
 
+
 void MostrarJugador(void * jug){
     jugador auxJug;
     jugador *pAuxJug = &auxJug;
@@ -40,6 +41,8 @@ int main()
     tLista *pListaJugFinal = &listaJugFinal;
 
 
+    system("chcp 65001"); ///Setea la consola de windows para poder usar caracteres UTF-8
+    system("cls");
 
     ///Menu para tateti
     while(salir!=1){
@@ -73,7 +76,8 @@ int main()
                 ///Una vez los jugadores estan cargados debo randomizar el orden en el que jugaran.
                 RandomizarLista(pListaJug);
                 ///muestro el orden de los jugadores
-                printf("\n\nOrden de juego: \n");
+                printf("GRUPO: %s\n\n", pGrup->nombreGrupo);
+                printf("Orden de juego: \n");
                 RecorrerLista(pListaJug, MostrarJugador, sizeof(jugador));
 
                 ///empiezo el loop de juego
@@ -83,23 +87,25 @@ int main()
                     SacarPrimeroLista(pListaJug, pJug);
                     turno = EmpezarPartida(tablero, TAMLARGO, TAMALTO);
                     if(turno == 0){
-                        maquinaChar = 'X';
-                        jugadorChar = 'O';
+                        maquinaChar = CRUZ;
+                        jugadorChar = CIRCULO;
+                        printf("Jugador %s: %s%c%s\n", pJug->nombre, AZUL, jugadorChar, RESETCOLOR);
+                        printf("Maquina: %s%c%s\n", ROJO, maquinaChar, RESETCOLOR);
                     }
                     else{
-                        jugadorChar = 'X';
-                        maquinaChar = 'O';
+                        jugadorChar = CRUZ;
+                        maquinaChar = CIRCULO;
+                        printf("Jugador %s: %s%c%s\n", pJug->nombre, ROJO, jugadorChar, RESETCOLOR);
+                        printf("Maquina: %s%c%s\n", AZUL, maquinaChar, RESETCOLOR);
                     }
-
-                    printf("Jugador: %s, %c\n", pJug->nombre, jugadorChar);
-                    printf("Maquina: %c\n", maquinaChar);
+                    MostrarTablero3x3(tablero);
                     while(ganador == 0){
 
 
                         ///despues de cada movimiento compruebo si hay un ganador o empate.
                         if(turno == 0){
                             ///juega la maquina
-                            printf("Movimiento de la maquina: \n");
+                            printf("Movimiento de la maquina:\n");
                             SeleccionarMejorMovimiento(tablero, TAMLARGO, TAMALTO, maquinaChar, jugadorChar);
                             ///cambio el turno para que luego juegue el jugador
                             turno = 1;
@@ -116,7 +122,7 @@ int main()
                     }
 
                     if(ganador == -1){
-                        if(jugadorChar == 'X'){
+                        if(jugadorChar == CRUZ){
                             printf("Gana el jugador\n");
                             pJug->puntos = pJug->puntos+3;
                         }
@@ -127,7 +133,7 @@ int main()
 
                     }
                     else if(ganador == 1){
-                        if(jugadorChar == 'O'){
+                        if(jugadorChar == CIRCULO){
                             printf("Gana el jugador\n");
                             pJug->puntos = pJug->puntos+3;
                         }
@@ -137,7 +143,7 @@ int main()
                         }
 
                     }
-                    else if(ganador == -1){
+                    else if(ganador == 2){
                         printf("Empate");
                         pJug->puntos = pJug->puntos+2;
                     }

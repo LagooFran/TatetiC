@@ -64,3 +64,35 @@
 1749368579 source:c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\utilidadestateti.c
 	"UtilidadesTateti.h"
 
+1749416100 source:c:\users\alan\desktop\tatetic-main\tatetic-main\tatetic\lista.c
+	"Lista.h"
+
+1749416100 c:\users\alan\desktop\tatetic-main\tatetic-main\tatetic\lista.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1749607859 source:c:\users\alan\desktop\tatetic-main\tatetic-main\tatetic\utilidadestateti.c
+	"UtilidadesTateti.h"
+	"AlgoritmoJugador.h"
+
+1749607752 c:\users\alan\desktop\tatetic-main\tatetic-main\tatetic\utilidadestateti.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	"Lista.h"
+
+1749604212 source:c:\users\alan\desktop\tatetic-main\tatetic-main\tatetic\algoritmojugador.c
+	"AlgoritmoJugador.h"
+	"UtilidadesTateti.h"
+
+1749596963 c:\users\alan\desktop\tatetic-main\tatetic-main\tatetic\algoritmojugador.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1749607859 source:c:\users\alan\desktop\tatetic-main\tatetic-main\tatetic\main.c
+	"UtilidadesTateti.h"
+	"AlgoritmoJugador.h"
+

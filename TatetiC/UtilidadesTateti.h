@@ -8,7 +8,11 @@
 #define TAMLARGO 3
 #define TAMALTO 3
 #define TAMTEXTO 300
-
+#define ROJO "\033[31m"
+#define AZUL "\033[36m"
+#define GRIS "\033[38;5;238m"
+#define AMARILLO "\033[33m"
+#define RESETCOLOR "\033[0m"
 
 
 typedef struct{

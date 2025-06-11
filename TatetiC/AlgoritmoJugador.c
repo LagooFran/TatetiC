@@ -8,16 +8,14 @@ int Ganador(char tablero[][TAMALTO], int filas, int columnas){ ///retorna 1 = si
     for(i = 0; i < filas; i++){
         for(j = 0; j < columnas; j++){
             //printf("%c", tablero[i][j]);
-            if(tablero[i][j] == 'X'){
+            if(tablero[i][j] == CRUZ){
                 //printf("Suma X\n");
                 x ++;
             }
-            else if(tablero[i][j] == 'O'){
+            else if(tablero[i][j] == CIRCULO){
                 //printf("Suma O\n");
                 o ++;
             }
-
-
             if(x == 3){
                 return -1;
             }
@@ -34,10 +32,10 @@ int Ganador(char tablero[][TAMALTO], int filas, int columnas){ ///retorna 1 = si
     ///recorro columnas
     for(i = 0; i < filas; i++){
         for(j = 0; j < columnas; j++){
-            if(tablero[j][i] == 'X'){
+            if(tablero[j][i] == CRUZ){
                 x ++;
             }
-            else if(tablero[j][i] == 'O'){
+            else if(tablero[j][i] == CIRCULO){
                 o ++;
             }
 
@@ -54,10 +52,10 @@ int Ganador(char tablero[][TAMALTO], int filas, int columnas){ ///retorna 1 = si
 
     ///recorro diagonal principal
     for(i = 0; i < filas; i++){
-        if(tablero[i][i] == 'X'){
+        if(tablero[i][i] == CRUZ){
             x ++;
         }
-        else if(tablero[i][i] == 'O'){
+        else if(tablero[i][i] == CIRCULO){
             o ++;
         }
 
@@ -77,10 +75,10 @@ int Ganador(char tablero[][TAMALTO], int filas, int columnas){ ///retorna 1 = si
     j = columnas;
     for(i = 0; i < filas; i++){
         j--;
-            if(tablero[i][j] == 'X'){
+            if(tablero[i][j] == CRUZ){
                 x ++;
             }
-            else if(tablero[i][j] == 'O'){
+            else if(tablero[i][j] == CIRCULO){
                 o ++;
             }
         }
@@ -99,28 +97,29 @@ int Ganador(char tablero[][TAMALTO], int filas, int columnas){ ///retorna 1 = si
     ///compruebo si hay casillas sin completar
     for(int i = 0; i < filas; i++){
         for(int j = 0; j < columnas; j++){
-            if(tablero[i][j] == ' '){
+            if(tablero[i][j] != CRUZ && tablero[i][j] != CIRCULO){
                 return 0; ///todavia hay movimientos posibles
             }
         }
     }
-
     return 2; ///Empate
 }
 
 
 int encontrarJugadaGanadora(char tablero[3][3], int* fil, int* col, char caracter) {
+    char aux;
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             if (CasilleroVacio(tablero, i, j)) {
+                aux = tablero[i][j];
                 tablero[i][j] = caracter; ///Reemplazo con el caracter y verifico si hay un ganador
                 if (Ganador(tablero, 3, 3) == 1 || Ganador(tablero,3,3) == -1) { ///Si hay un ganador, significa que ese movimiento permite ganar
                     *fil = i;
                     *col = j;
-                    tablero[i][j] = ' '; /// Revierto
+                    tablero[i][j] = aux; /// Revierto
                     return 1;
                 }
-                tablero[i][j] = ' '; ///Revierto
+                tablero[i][j] = aux; ///Revierto
             }
         }
     }

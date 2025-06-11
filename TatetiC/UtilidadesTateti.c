@@ -1,17 +1,33 @@
 #include "UtilidadesTateti.h"
+#include "AlgoritmoJugador.h"
+
 
 void MostrarTablero3x3(char tablero[][TAMALTO]){
-    printf("\n \t\t%c | %c | %c\n", tablero[0][0], tablero[0][1], tablero[0][2]);
-    printf("\t\t---------\n");
-    printf(" \t\t%c | %c | %c\n", tablero[1][0], tablero[1][1], tablero[1][2]);
-    printf("\t\t---------\n");
-    printf(" \t\t%c | %c | %c\n\n", tablero[2][0], tablero[2][1], tablero[2][2]);
+    int fil, col;
+
+    printf("\n");
+
+    for(fil=0; fil<3; fil++){
+        printf("\t");
+        for(col=0; col<3; col++){
+            printf(GRIS);
+            if(tablero[fil][col] == CRUZ) printf(ROJO);
+            if(tablero[fil][col] == CIRCULO) printf(AZUL);
+            printf(" %c ",tablero[fil][col]);
+            printf(RESETCOLOR);
+            if(col != TAMALTO-1) printf("║");
+        }
+        if(fil != TAMLARGO-1) printf("\n\t═══╬═══╬═══\n");
+    }
+    printf("\n\n\n");
 }
 
 void ReiniciarTablero(char tablero[][TAMALTO], int filas, int columnas){
+    int cont=0;
     for(int i=0; i<filas; i++){
         for(int j=0; j<columnas; j++){
-            tablero[i][j] = ' ';
+            cont++;
+            tablero[i][j] = ((char)cont) + '0';
         }
     }
 }
@@ -40,13 +56,13 @@ int EmpezarPartida(char tablero[][TAMALTO], int filas, int columnas){ ///Inicia 
     int aleatorio;
     srand(time(NULL));
     ReiniciarTablero(tablero, filas, columnas);
-    printf("\n\nIncio de partida!!\n\n");
+    printf("\n\n%sINICIO DE PARTIDA!!%s\n\n", AMARILLO, RESETCOLOR);
     aleatorio = (rand() % (1 - 0 + 1)) + 0;
     return aleatorio;
 }
 
 int CasilleroVacio(char tablero[][TAMALTO], int fil, int col){
-    return (tablero[fil][col]==' ');
+    return (tablero[fil][col]!= CRUZ && tablero[fil][col]!= CIRCULO);
 }
 
 void EscribirTablero(char tablero[][TAMALTO], int fil, int col, char caracter){
@@ -56,7 +72,6 @@ void EscribirTablero(char tablero[][TAMALTO], int fil, int col, char caracter){
 
 void RegistrarMovimientoJugador(char tablero[][TAMALTO], int filas, int columnas, char jugadorChar){
     int numero, bandera, fila, columna;
-    printf("\n\n[1][2][3]\n[4][5][6]\n[7][8][9]\n");
     printf("Seleccione su movimiento: ");
     do{
         scanf("%d",&numero);
@@ -75,7 +90,6 @@ void RegistrarMovimientoJugador(char tablero[][TAMALTO], int filas, int columnas
             bandera = 0;
         }
     } while(bandera == 1);
-///el usuario elige un movimiento y coloca un "jugador char" en la posicion seleccionada. Verifica que sea posible.
 }
 
 

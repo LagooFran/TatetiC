@@ -6,6 +6,8 @@
 #include <string.h>
 #define TAMLARGO 3
 #define TAMALTO 3
+#define CRUZ 'X'
+#define CIRCULO 'O'
 
 
 int Ganador(char[][TAMALTO], int, int);
