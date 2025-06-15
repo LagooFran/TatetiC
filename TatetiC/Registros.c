@@ -1,5 +1,6 @@
 #include "Registros.h"
 #include <curl/curl.h>
+#define MAXLINEA 300
 
 void POST_API(char*);
 
@@ -34,7 +35,11 @@ Recibe un puntero a una lista de jugadores
 
     // Convertir a string y guardar
     char *json = cJSON_Print(raiz); // Para formato legible
-    FILE *archivo = fopen(nombreArchivo, "w"); //ACA FALTA VALIDAR SI SE ABRIO BIEN EL ARCHIVO
+    FILE *archivo;
+    if(!(archivo = fopen(nombreArchivo, "w"))){ //ACA FALTA VALIDAR SI SE ABRIO BIEN EL ARCHIVO
+        printf("\n Error al generar el archivo LOG");
+        //No retorno nada para que igualmente envie los datos a la api y libere memoria
+    }
     if (archivo) {
         fputs(json, archivo);
         fclose(archivo);
@@ -105,19 +110,53 @@ size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
 
 char* GET_API(void)
 {
+    //Variables para el get
     CURL *curl;
     CURLcode res;
     ResponseData response = {NULL, 0};
+
+    //Variables para el manejo del archivo
+    char linea[MAXLINEA];
+    char url[MAXLINEA];
+    char equipo[MAXLINEA];
+    char *aux = linea;
+
+    //Abro el archivo para recuperar la url
+    FILE* pArch;
+    if(!(pArch = (fopen("Config.TXT", "rt"
+                        )))){
+        printf("\n\nError al abrir el Config.TXT");
+        return NULL;
+    }
+
+    //Obtengo la  primera linea
+    fgets(linea, MAXLINEA, pArch);
+    fclose(pArch); //Cierro el archivo porque no lo uso mas
+
+    //Remplazo el \n
+    aux = strchr(linea, '\n');
+    *aux = '\0';
+    //Obtengo el nombre del equipo
+    aux = strrchr(linea, '|');
+    strcpy(equipo, aux+1);
+    //Reemplazo el primer pipe por un \0 y obtengo la url
+    aux -= 1;
+    *aux = '\0';
+    strcpy(url, linea);
+
+    //Formo la url completa concatenando ambas partes separadas por /
+    strcat(url, "/");
+    strcat(url, equipo);
 
     curl_global_init(CURL_GLOBAL_DEFAULT);
     curl = curl_easy_init();
 
     if (curl)
     {
-        curl_easy_setopt(curl, CURLOPT_URL, "https://algoritmos-api.azurewebsites.net/api/TaCTi/direccion");
+        curl_easy_setopt(curl, CURLOPT_URL, url); //"https://algoritmos-api.azurewebsites.net/api/TaCTi/direccion"
 
         struct curl_slist *headers = NULL;
-        headers = curl_slist_append(headers, "X-Secret: FADSFAS");
+        //headers = curl_slist_append(headers, "X-Secret: FADSFAS");
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L); // solo test
@@ -188,6 +227,31 @@ void POST_API(char* pJSON)
     CURL *curl;
     CURLcode res;
 
+    //Variables para el manejo del archivo
+    char linea[MAXLINEA];
+    char url[MAXLINEA];
+    char *aux = linea;
+
+    //Abro el archivo para recuperar la url
+    FILE* pArch;
+    if(!(pArch = (fopen("Config.TXT", "rt"
+                        )))){
+        printf("\n\nError al abrir el Config.TXT");
+        return;
+    }
+
+    //Obtengo la  primera linea
+    fgets(linea, MAXLINEA, pArch);
+    fclose(pArch); //Cierro el archivo porque no lo uso mas
+
+    //Encuentra el segundo pipe
+    aux = strrchr(linea, '|');
+    //Reemplazo el primer pipe por un \0 y obtengo la url
+    aux -= 1;
+    *aux = '\0';
+    strcpy(url, linea);
+
+
     curl_global_init(CURL_GLOBAL_DEFAULT);
     curl = curl_easy_init();
 
@@ -196,7 +260,7 @@ void POST_API(char* pJSON)
         struct curl_slist *headers = NULL;
         headers = curl_slist_append(headers, "Content-Type: application/json");
 
-        curl_easy_setopt(curl, CURLOPT_URL, "https://algoritmos-api.azurewebsites.net/api/TaCTi");
+        curl_easy_setopt(curl, CURLOPT_URL, url); //"https://algoritmos-api.azurewebsites.net/api/TaCTi"
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, pJSON);
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
