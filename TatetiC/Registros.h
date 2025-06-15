@@ -12,10 +12,11 @@
 #define TAM_FECHA 100
 
 
-void CrearJSON(grupo *);
+void CrearJSON(tLista *);
 void AgregarJugadores(tLista *, cJSON *);
-void ObtenerFecha(char *, int, int);
+void ObtenerFecha(char *, size_t);
 void RecuperarDatos(grupo *, const char *);
+void CargarJugadoresDesdeAPI(tLista*);
 
 
 #endif // REGISTROS_H_INCLUDED

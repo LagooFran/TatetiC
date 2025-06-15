@@ -234,3 +234,27 @@ void RecorrerLista(tLista *lista, void (*accion)(void *), size_t dataSize){
 }
 
 
+void ordenar(tLista *p, int (*comparar)(void *, void *)){
+
+    tLista *pri = p;
+
+    if(*p == NULL)
+     return;
+
+    while((*p)->sig){
+        if(comparar((*p)->data, (*p)->sig->data) > 0){
+            tLista *q = pri;
+            tNodo *aux = (*p)->sig;
+
+            (*p)->sig = aux->sig;
+            //aux->sig = NULL;
+            while(comparar((*q)->data, aux->data) < 0) //El signo menor que esta al reves en los apuntes de miel
+                q = &(*q)->sig;
+            aux->sig = *q;
+            *q = aux;
+        }
+        else
+            p = &(*p)->sig;
+    }
+}
+

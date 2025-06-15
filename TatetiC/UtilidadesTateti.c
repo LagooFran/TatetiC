@@ -92,4 +92,14 @@ void RegistrarMovimientoJugador(char tablero[][TAMALTO], int filas, int columnas
     } while(bandera == 1);
 }
 
+int OrdenarPuntosDescendente(void *a, void *b){
+    jugador jug1 = *(jugador*)a;
+    jugador jug2 = *(jugador*)b;
+
+    if(jug1.puntos > jug2.puntos)
+        return -1;
+    if(jug1.puntos < jug2.puntos)
+        return 1;
+    return 0;
+}
 

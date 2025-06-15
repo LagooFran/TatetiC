@@ -13,6 +13,9 @@
 #define GRIS "\033[38;5;238m"
 #define AMARILLO "\033[33m"
 #define RESETCOLOR "\033[0m"
+#define ESLETRA(x)   ( (('a'<=(x) && (x)<='z') || ('A'<=(x) && (x)<='Z')) ? 1 : 0 )
+#define AMAYUSCULA(x) ( (('a'<=(x) && (x)<='z')) ? ((x)-32) : (x) )
+#define ESOPCION(x)   ( (('A'<=(x) && (x)<='C')) ? 1 : 0 )
 
 
 typedef struct{
@@ -36,5 +39,6 @@ void RandomizarLista(tLista *);
 void RegistrarMovimientoJugador(char [][TAMALTO], int, int, char);
 void EscribirTablero(char [][TAMALTO], int, int, char);
 int CasilleroVacio(char [][TAMALTO], int, int);
+int OrdenarPuntosDescendente(void *, void *);
 
 #endif // UTILIDADESTATETI_H_INCLUDED

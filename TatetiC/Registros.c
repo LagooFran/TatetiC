@@ -1,9 +1,11 @@
 #include "Registros.h"
+#include <curl/curl.h>
 
+void POST_API(char*);
 
-void CrearJSON(grupo* pGrupo){
+void CrearJSON(tLista* pJugadores){
 /***
-Recibe un puntero a grupo ->Grupo ya almacena el nombre y la lista final
+Recibe un puntero a una lista de jugadores
 ***/
 
     // Crear objeto raíz
@@ -17,26 +19,28 @@ Recibe un puntero a grupo ->Grupo ya almacena el nombre y la lista final
 
 
     // Agregar el nombre del grupo
-    cJSON_AddStringToObject(raiz, "codigoGrupo", pGrupo->nombreGrupo);
+    cJSON_AddStringToObject(raiz, "codigoGrupo", "direccion"); //Direccion debe ser leido desde un archivo
     // Recorre la lista y agrega a los jugadores al array
-    AgregarJugadores(pGrupo->jugadores, jugadores);
+    AgregarJugadores(pJugadores, jugadores);
     // Cargo el array en la raiz
     cJSON_AddItemToObject(raiz, "jugadores", jugadores);
 
     // Genero el nombre del json
-    ObtenerFecha(fecha, TAM_FECHA, 0);
+    ObtenerFecha(fecha, TAM_FECHA);
     strcpy(nombreArchivo, "informe_juego_");
     strcat(nombreArchivo, fecha);
-    strcat(nombreArchivo, ".json");
+    strcat(nombreArchivo, ".txt");
 
 
     // Convertir a string y guardar
     char *json = cJSON_Print(raiz); // Para formato legible
-    FILE *archivo = fopen(nombreArchivo, "w");
+    FILE *archivo = fopen(nombreArchivo, "w"); //ACA FALTA VALIDAR SI SE ABRIO BIEN EL ARCHIVO
     if (archivo) {
         fputs(json, archivo);
         fclose(archivo);
     }
+
+    POST_API(json);
 
     // Liberar memoria
     free(json);
@@ -46,115 +50,173 @@ Recibe un puntero a grupo ->Grupo ya almacena el nombre y la lista final
 }
 
 void AgregarJugadores(tLista *lJugadores, cJSON *aJugadores) {
-
-    char fecha[TAM_FECHA];
     jugador aux;
     jugador *pAux;
 
     pAux = &aux;
-    ObtenerFecha(fecha, TAM_FECHA, 1);
 
     while(!ListaVacia(lJugadores)){
     SacarPrimeroLista(lJugadores, pAux);
-
     cJSON *jugador = cJSON_CreateObject();
     cJSON_AddStringToObject(jugador, "nombre", aux.nombre);
     cJSON_AddNumberToObject(jugador, "puntos", aux.puntos);
-    cJSON_AddStringToObject(jugador, "fechaUltimaPartida", fecha);
 
     cJSON_AddItemToArray(aJugadores, jugador);
     }
 }
 
-void ObtenerFecha(char *fecha, int tam, int formato){
-/**
-**FORMATO == 0 --> para el nombre del archivo
-**FORMATO == 1 --> para la hora de los jugadores
-**/
+void ObtenerFecha(char *fecha, size_t tam){
+
+
     time_t t;
     struct tm *tm_info;
 
     t = time(NULL);
     tm_info = localtime(&t); // Obtiene la fecha y hora local
 
-    if (formato == 0){
-        strftime(fecha, sizeof(tam), "%Y-%m-%d-%H-%M", tm_info);
-    }else if(formato == 1){
-        strftime(fecha, sizeof(tam), "%d/%m/%Y %H:%M:%S", tm_info);
-    }
+    strftime(fecha, tam, "%Y-%m-%d-%H-%M", tm_info);
+
+    return;
 }
 
 
-void RecuperarDatos(grupo *pGrupo, const char *nombreArchivo){
+//Struct para WriteCallBack
+typedef struct {
+    char *buffer;
+    size_t size;
+} ResponseData;
 
-    FILE *archivo = fopen(nombreArchivo, "r");
-    if (!archivo) {
-        perror("Error al abrir el archivo");
-        return;
-    }
+// Función que maneja la respuesta de la solicitud HTTP para el GET
+size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
+{
+    size_t realsize = size * nmemb;
+    ResponseData *resp = (ResponseData *)userp;
 
-    // Leer archivo completo en un buffer
-    fseek(archivo, 0, SEEK_END);
-    long tamanio = ftell(archivo);
-    rewind(archivo);
+    char *new_buffer = realloc(resp->buffer, resp->size + realsize + 1);
+    if (!new_buffer) return 0;
 
-    char *contenido = (char *)malloc(tamanio + 1);
-    if (!contenido) {
-        fclose(archivo);
-        return;
-    }
+    resp->buffer = new_buffer;
+    memcpy(&(resp->buffer[resp->size]), contents, realsize);
+    resp->size += realsize;
+    resp->buffer[resp->size] = '\0';
 
-    fread(contenido, 1, tamanio, archivo);
-    contenido[tamanio] = '\0';
-    fclose(archivo);
+    return realsize;
+}
 
-    // Parsear JSON
-    cJSON *raiz = cJSON_Parse(contenido);
-    free(contenido);
+char* GET_API(void)
+{
+    CURL *curl;
+    CURLcode res;
+    ResponseData response = {NULL, 0};
 
-    if (!raiz) return;
+    curl_global_init(CURL_GLOBAL_DEFAULT);
+    curl = curl_easy_init();
 
-    // Inicializar estructura grupo
-    pGrupo->jugadores = (tLista *)malloc(sizeof(tLista));
-    CrearLista(pGrupo->jugadores);
-    pGrupo->totalPuntos = 0;
-    pGrupo->cantJugadores = 0;
+    if (curl)
+    {
+        curl_easy_setopt(curl, CURLOPT_URL, "https://algoritmos-api.azurewebsites.net/api/TaCTi/direccion");
 
-    // Obtener nombre del grupo
-    cJSON *codigoGrupo = cJSON_GetObjectItemCaseSensitive(raiz, "codigoGrupo");
-    if (!cJSON_IsString(codigoGrupo)) {
-        cJSON_Delete(raiz);
-        return;
-    }
-    strncpy(pGrupo->nombreGrupo, codigoGrupo->valuestring, TAMTEXTO);
+        struct curl_slist *headers = NULL;
+        headers = curl_slist_append(headers, "X-Secret: FADSFAS");
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
-    // Obtener array de jugadores
-    cJSON *jugadores = cJSON_GetObjectItemCaseSensitive(raiz, "jugadores");
-    if (cJSON_IsArray(jugadores)) {
-        cJSON *item;
-        cJSON_ArrayForEach(item, jugadores) {
-            jugador j;
-            cJSON *nombre = cJSON_GetObjectItemCaseSensitive(item, "nombre");
-            cJSON *puntos = cJSON_GetObjectItemCaseSensitive(item, "puntos");
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L); // solo test
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
 
-            if (cJSON_IsString(nombre) && cJSON_IsNumber(puntos)) {
-                strncpy(j.nombre, nombre->valuestring, TAMTEXTO);
-                j.puntos = puntos->valueint;
+        res = curl_easy_perform(curl);
 
-                PonerAlFinal(pGrupo->jugadores, &j, sizeof(jugador));
-                pGrupo->totalPuntos += j.puntos;
-                pGrupo->cantJugadores++;
-            }
+        if (res != CURLE_OK)
+        {
+            fprintf(stderr, "Error en la solicitud: %s\n", curl_easy_strerror(res));
+            free(response.buffer);
+            response.buffer = NULL;
         }
+
+        curl_slist_free_all(headers);
+        curl_easy_cleanup(curl);
     }
 
-    cJSON_Delete(raiz);
+    curl_global_cleanup();
+
+    return response.buffer; // esto ahora es el JSON completo (o NULL si falla)
 }
 
-/***
-Todavia falta la implementacion con la API
-Verificar si el grupo ya existe y si es asi modificar los puntos para el jugador existe o crear al jugador en el grupo
-Modificar la funcion que obtiene los datos ya que la API no devuelve un archivo.json sino directamente el string
-***/
+
+void CargarJugadoresDesdeAPI(tLista *lista)
+{
+
+    char *json_str = GET_API();
+    if (!json_str)
+        return;
+
+    cJSON *root = cJSON_Parse(json_str);
+    if (!root || !cJSON_IsArray(root))
+    {
+        free(json_str);
+        return;
+    }
+
+    jugador jug;
+    jugador *pJug = &jug;
+
+    cJSON *item;
+    cJSON_ArrayForEach(item, root)
+    {
+        cJSON *nombre = cJSON_GetObjectItem(item, "nombreJugador");
+        cJSON *puntaje = cJSON_GetObjectItem(item, "puntaje");
+
+        if (cJSON_IsString(nombre) && cJSON_IsNumber(puntaje))
+        {
+            strncpy(pJug->nombre, nombre->valuestring, sizeof(pJug->nombre));
+            pJug->puntos = puntaje->valueint;
+            PonerAlFinal(lista, pJug, sizeof(jugador));
+        }
+        //MostrarJugador(pJug);
+    }
+
+    cJSON_Delete(root);
+    free(json_str);
+}
+
+
+
+
+
+void POST_API(char* pJSON)
+{
+    CURL *curl;
+    CURLcode res;
+
+    curl_global_init(CURL_GLOBAL_DEFAULT);
+    curl = curl_easy_init();
+
+    if (curl)
+    {
+        struct curl_slist *headers = NULL;
+        headers = curl_slist_append(headers, "Content-Type: application/json");
+
+        curl_easy_setopt(curl, CURLOPT_URL, "https://algoritmos-api.azurewebsites.net/api/TaCTi");
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, pJSON);
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+        //curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback); //Esta linea aca no se usa porque el POST no devuelve datos
+
+        res = curl_easy_perform(curl);
+
+        if (res != CURLE_OK)
+            fprintf(stderr, "Error en la solicitud: %s\n", curl_easy_strerror(res));
+
+        curl_slist_free_all(headers);
+        curl_easy_cleanup(curl);
+    }
+
+    curl_global_cleanup();
+    return;
+}
+
+
+
+
 
 

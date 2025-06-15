@@ -25,6 +25,7 @@ int VerPrimeroLista(const tLista *, void *);
 int SacarPrimeroLista(tLista *, void *);
 int SacarUltimoLista(const tLista *, void *);
 void RecorrerLista(tLista *, void (*accion)(void *), size_t);
+void ordenar(tLista *, int (*comparar)(void *, void *));
 
 
 

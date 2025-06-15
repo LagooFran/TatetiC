@@ -39,10 +39,18 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Lista.h" />
+		<Unit filename="Registros.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Registros.h" />
 		<Unit filename="UtilidadesTateti.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="UtilidadesTateti.h" />
+		<Unit filename="cJSON.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="cJSON.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

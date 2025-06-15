@@ -1,5 +1,6 @@
 #include "UtilidadesTateti.h"
 #include "AlgoritmoJugador.h"
+#include "Registros.h"
 
 
 void MostrarJugador(void * jug){
@@ -13,8 +14,9 @@ void MostrarJugadorYPuntos(void * jug){
     jugador auxJug;
     jugador *pAuxJug = &auxJug;
     pAuxJug = (jugador *)jug;
-    printf("Nombre: %s, Puntos: %d\n", pAuxJug->nombre, pAuxJug->puntos);
+    printf("Nombre: %-30s\tPuntos: %d\n", pAuxJug->nombre, pAuxJug->puntos);
 }
+
 
 ///cuando prueba el programa funciona bien pero se queda en bucle infinito porque nadie hace ningun movimiento (las funciones no estan programadas todavia)
 ///para probar el programa sin hacer movimientos setear el tablero de alguna manera inicialmente y comentar todos los ReiniciarTablero()
@@ -30,6 +32,7 @@ int main()
     int ganador = 0;
     char tablero[TAMLARGO][TAMALTO];
     char jugadorChar, maquinaChar;
+    int validador;
     ReiniciarTablero(tablero, TAMALTO, TAMLARGO);
     jugador jug;
     jugador *pJug = &jug;
@@ -40,6 +43,11 @@ int main()
     tLista listaJugFinal;
     tLista *pListaJugFinal = &listaJugFinal;
 
+    tLista listaJugMostrar;
+    tLista *pListaJugMostrar = &listaJugMostrar;
+    CargarJugadoresDesdeAPI(pListaJugMostrar);
+
+
 
     system("chcp 65001"); ///Setea la consola de windows para poder usar caracteres UTF-8
     system("cls");
@@ -47,11 +55,11 @@ int main()
     ///Menu para tateti
     while(salir!=1){
         printf("TatetiC!\n\n");
-        printf("[1] Comenzar a jugar\n[2] Ver ranking\n[3] Salir\n");
+        printf("[A] Comenzar a jugar\n[B] Ver ranking\n[C] Salir\n");
         scanf("%d", &seleccion);
 
 
-        switch(seleccion){
+        switch(AMAYUSCULA(seleccion)){
             case 1:
                 system("cls");
                 ///cargo los datos del grupo en struct
@@ -61,7 +69,13 @@ int main()
 
                 ///el struct grupo contiene una lista de jugadores
                 printf("\nIngrese la cantidad de jugadores: ");
+                //validador =
                 scanf(" %d", &pGrup->cantJugadores);
+                /*while(validador != 1){
+                    printf("\nEl valor debe ser numerico...");
+                    printf("\nIngrese la cantidad de jugadores: ");
+                    validador = scanf(" %d", &pGrup->cantJugadores);
+                }*/
                 printf("\nCarga de jugadores:\n");
                 CrearLista(pListaJug);
 
@@ -163,10 +177,17 @@ int main()
                 RecorrerLista(pGrup->jugadores, MostrarJugadorYPuntos, sizeof(jugador));
                 ///una vez se termina con todo eso habria que usar pListaJugFinal para contactar con la api y crear el archivo de registro
 
+                CrearJSON(pListaJugFinal);
+
                 break;
 
             case 2:
-                printf("op2");
+                system("cls");
+                //Ordeno la lista
+                ordenar(pListaJugMostrar,OrdenarPuntosDescendente);
+                printf("RANKING: \n");
+                RecorrerLista(pListaJugMostrar, MostrarJugadorYPuntos, sizeof(jugador));
+                printf("\n\n");
                 break;
             case 3:
                 printf("Saliendo...");
