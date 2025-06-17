@@ -53,10 +53,7 @@ int Ganador(char tablero[][TAMLARGO]){ ///retorna 1 = si gano la O |-1 = si gano
     col = TAMLARGO;
     fil = 0;
     while (col>0 && fil<TAMALTO){
-        if(tablero[fil][col] == CRUZ){
-            x ++;
-            printf("X:%d, col:%d, fil:%d\n",x, fil, col);
-        }
+        if(tablero[fil][col] == CRUZ) x ++;
         else if(tablero[fil][col] == CIRCULO) o ++;
         col--;
         fil++;
