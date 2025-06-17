@@ -14,7 +14,9 @@
 #define AMARILLO "\033[33m"
 #define RESETCOLOR "\033[0m"
 #define ESLETRA(x)   ( (('a'<=(x) && (x)<='z') || ('A'<=(x) && (x)<='Z')) ? 1 : 0 )
+#define ESMAYUSCULA(x) (('A'<=(x) && (x)<='Z') ? 1 : 0 )
 #define AMAYUSCULA(x) ( (('a'<=(x) && (x)<='z')) ? ((x)-32) : (x) )
+#define ESNUMERO(x)   ( ('0'<=(x) && (x)<='9')? 1 : 0 )
 #define ESOPCION(x)   ( (('A'<=(x) && (x)<='C')) ? 1 : 0 )
 
 
@@ -32,13 +34,14 @@ typedef struct{
 
 
 
-void MostrarTablero3x3(char[][TAMALTO]);
-void ReiniciarTablero(char[][TAMALTO], int, int);
-int EmpezarPartida(char [][TAMALTO], int, int);
+void MostrarTablero3x3(char[][TAMLARGO]);
+void MostrarTablero(char [][TAMLARGO]);
+void ReiniciarTablero(char[][TAMLARGO]);
+int EmpezarPartida(char [][TAMLARGO]);
 void RandomizarLista(tLista *);
-void RegistrarMovimientoJugador(char [][TAMALTO], int, int, char);
-void EscribirTablero(char [][TAMALTO], int, int, char);
-int CasilleroVacio(char [][TAMALTO], int, int);
+void RegistrarMovimientoJugador(char [][TAMLARGO], int, int, char);
+void EscribirTablero(char [][TAMLARGO], int, int, char);
+int CasilleroVacio(char [][TAMLARGO], int, int);
 int OrdenarPuntosDescendente(void *, void *);
 
 #endif // UTILIDADESTATETI_H_INCLUDED

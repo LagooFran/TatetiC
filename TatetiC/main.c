@@ -25,15 +25,18 @@ void MostrarJugadorYPuntos(void * jug){
 
 int main()
 {
-    int seleccion;
+    char seleccion;
+    int basura;
     int salir = 0;
     int puntosGanados = 0;
     int turno;
     int ganador = 0;
-    char tablero[TAMLARGO][TAMALTO];
+    int bandera = 0;
+    char tablero[TAMALTO][TAMLARGO];
     char jugadorChar, maquinaChar;
-    int validador;
-    ReiniciarTablero(tablero, TAMALTO, TAMLARGO);
+    char validador;
+    char colorJugador[15], colorMaquina[15];
+    ReiniciarTablero(tablero);
     jugador jug;
     jugador *pJug = &jug;
     grupo grup;
@@ -49,18 +52,23 @@ int main()
 
 
 
+
     system("chcp 65001"); ///Setea la consola de windows para poder usar caracteres UTF-8
     system("cls");
 
     ///Menu para tateti
-    while(salir!=1){
-        printf("TatetiC!\n\n");
-        printf("[A] Comenzar a jugar\n[B] Ver ranking\n[C] Salir\n");
-        scanf("%d", &seleccion);
+    printf("%s\tTatetiC!%s", AMARILLO,RESETCOLOR);
+
+    while(salir!= 1){
+        if (bandera == 0) printf("\n\n\n[A] Comenzar a jugar\n[B] Ver ranking\n[C] Salir\n\n");
+        seleccion = getchar();
+        while ((basura = getchar()) != '\n' && basura != EOF) { ///Reviso si quedó algo en el buffer
+            seleccion = 'X'; ///Opcion invalida
+        }
 
 
         switch(AMAYUSCULA(seleccion)){
-            case 1:
+            case 'A':
                 system("cls");
                 ///cargo los datos del grupo en struct
                 printf("Ingrese el nombre del grupo: ");
@@ -99,43 +107,48 @@ int main()
                 while(ListaVacia(pListaJug) != 1){
                     ///al inicio de cada partido saco el primer jugador de la lista inicial.
                     SacarPrimeroLista(pListaJug, pJug);
-                    turno = EmpezarPartida(tablero, TAMLARGO, TAMALTO);
+                    turno = EmpezarPartida(tablero);
                     if(turno == 0){
                         maquinaChar = CRUZ;
                         jugadorChar = CIRCULO;
-                        printf("Jugador %s: %s%c%s\n", pJug->nombre, AZUL, jugadorChar, RESETCOLOR);
-                        printf("Maquina: %s%c%s\n", ROJO, maquinaChar, RESETCOLOR);
+                        strcpy(colorJugador, AZUL);
+                        strcpy(colorMaquina, ROJO);
+                        printf("Jugador %s: %s%c%s\n", pJug->nombre, colorJugador, jugadorChar, RESETCOLOR);
+                        printf("Maquina: %s%c%s\n", colorMaquina, maquinaChar, RESETCOLOR);
                     }
                     else{
                         jugadorChar = CRUZ;
                         maquinaChar = CIRCULO;
-                        printf("Jugador %s: %s%c%s\n", pJug->nombre, ROJO, jugadorChar, RESETCOLOR);
-                        printf("Maquina: %s%c%s\n", AZUL, maquinaChar, RESETCOLOR);
+                        strcpy(colorJugador, ROJO);
+                        strcpy(colorMaquina, AZUL);
+                        printf("Jugador %s: %s%c%s\n", pJug->nombre, colorJugador, jugadorChar, RESETCOLOR);
+                        printf("Maquina: %s%c%s\n", colorMaquina, maquinaChar, RESETCOLOR);
                     }
-                    MostrarTablero3x3(tablero);
+                    MostrarTablero(tablero);
                     while(ganador == 0){
 
 
                         ///despues de cada movimiento compruebo si hay un ganador o empate.
                         if(turno == 0){
                             ///juega la maquina
-                            printf("Movimiento de la maquina:\n");
+                            printf("Movimiento de la %sMAQUINA%s:\n", colorMaquina, RESETCOLOR);
                             SeleccionarMejorMovimiento(tablero, TAMLARGO, TAMALTO, maquinaChar, jugadorChar);
                             ///cambio el turno para que luego juegue el jugador
                             turno = 1;
                         }
                         else{ ///turno = 1
                             ///juega el jugador
+                            printf("Movimiento de jugador %s%s%s: ", colorJugador, pJug->nombre, RESETCOLOR);
                             RegistrarMovimientoJugador(tablero, TAMLARGO, TAMALTO, jugadorChar);
                             ///cambio el turno pra que luego juegue la maquina.
                             turno = 0;
                         }
-                        MostrarTablero3x3(tablero);
-                        ganador = Ganador(tablero, TAMLARGO, TAMALTO);
+                        MostrarTablero(tablero);
+                        ganador = Ganador(tablero);
 
                     }
 
-                    if(ganador == -1){
+                    if(ganador == GANACRUZ){
                         if(jugadorChar == CRUZ){
                             printf("Gana el jugador\n");
                             pJug->puntos = pJug->puntos+3;
@@ -146,7 +159,7 @@ int main()
                         }
 
                     }
-                    else if(ganador == 1){
+                    else if(ganador == GANACIRCULO){
                         if(jugadorChar == CIRCULO){
                             printf("Gana el jugador\n");
                             pJug->puntos = pJug->puntos+3;
@@ -157,7 +170,7 @@ int main()
                         }
 
                     }
-                    else if(ganador == 2){
+                    else if(ganador == EMPATE){
                         printf("Empate");
                         pJug->puntos = pJug->puntos+2;
                     }
@@ -167,7 +180,7 @@ int main()
                     pJug->puntos = pJug->puntos + puntosGanados;
                     ///y agrego al jugador con su puntuacion a la lista de grupo
                     PonerAlFinal(pListaJugFinal, pJug, sizeof(jug));
-                    ReiniciarTablero(tablero, 3, 3);
+                    ReiniciarTablero(tablero);
                     ganador = 0;
                 }
 
@@ -178,23 +191,25 @@ int main()
                 ///una vez se termina con todo eso habria que usar pListaJugFinal para contactar con la api y crear el archivo de registro
 
                 CrearJSON(pListaJugFinal);
-
+                bandera = 0;
                 break;
 
-            case 2:
+            case 'B':
                 system("cls");
                 //Ordeno la lista
                 ordenar(pListaJugMostrar,OrdenarPuntosDescendente);
                 printf("RANKING: \n");
                 RecorrerLista(pListaJugMostrar, MostrarJugadorYPuntos, sizeof(jugador));
                 printf("\n\n");
+                bandera = 0;
                 break;
-            case 3:
+            case 'C':
                 printf("Saliendo...");
                 salir = 1;
                 break;
             default:
-                printf("Opcion Invalida\n");
+                printf("Opcion Invalida, reingrese:");
+                bandera = 1;
                 break;
         }
     }

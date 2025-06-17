@@ -33,36 +33,38 @@
 	<stdlib.h>
 	<string.h>
 
-1749369784 source:c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\algoritmojugador.c
+1750150100 source:c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\algoritmojugador.c
 	"AlgoritmoJugador.h"
 	"UtilidadesTateti.h"
 
-1749366507 c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\algoritmojugador.h
+1750149071 c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\algoritmojugador.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
+	"UtilidadesTateti.h"
 
-1749063772 source:c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\lista.c
+1750005777 source:c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\lista.c
 	"Lista.h"
 
-1749063772 c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\lista.h
+1750005777 c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\lista.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1749368579 source:c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\main.c
+1750150226 source:c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\main.c
 	"UtilidadesTateti.h"
 	"AlgoritmoJugador.h"
 
-1749367381 c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\utilidadestateti.h
+1750185916 c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\utilidadestateti.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<time.h>
 	"Lista.h"
 
-1749368579 source:c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\utilidadestateti.c
+1750185916 source:c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\utilidadestateti.c
 	"UtilidadesTateti.h"
+	"AlgoritmoJugador.h"
 
 1749416100 source:c:\users\alan\desktop\tatetic-main\tatetic-main\tatetic\lista.c
 	"Lista.h"
@@ -95,4 +97,26 @@
 1749607859 source:c:\users\alan\desktop\tatetic-main\tatetic-main\tatetic\main.c
 	"UtilidadesTateti.h"
 	"AlgoritmoJugador.h"
+
+1750005777 c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\registros.h
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	"cJSON.h"
+	"UtilidadesTateti.h"
+
+1750005777 c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\cjson.h
+	<stddef.h>
+
+1750005777 source:c:\users\alan\desktop\algoritmos proyecto\tatetic-main\tatetic\cjson.c
+	<string.h>
+	<stdio.h>
+	<math.h>
+	<stdlib.h>
+	<limits.h>
+	<ctype.h>
+	<float.h>
+	<locale.h>
+	"cJSON.h"
 

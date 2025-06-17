@@ -1,5 +1,5 @@
-#include "Registros.h"
-#include <curl/curl.h>
+//#include "Registros.h"
+//#include <curl/curl.h>
 #define MAXLINEA 300
 
 void POST_API(char*);
