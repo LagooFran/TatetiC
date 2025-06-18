@@ -96,10 +96,12 @@ void RegistrarMovimientoJugador(char tablero[][TAMLARGO], int filas, int columna
     int bandera, fila, columna, casillero, limite;
     char movimiento;
     limite = (TAMALTO*TAMLARGO + 56);
+
+    while (getchar() != '\n'); /// Limpio el buffer
+        movimiento = getchar();
+
     do{
         bandera = 0;
-        while (getchar() != '\n'); /// Limpio el buffer
-        movimiento = getchar();
         if((!ESMAYUSCULA(movimiento) && !ESNUMERO(movimiento)) || movimiento == '0' || (int)movimiento>=limite){
                 printf("\nMovimiento invalido, reingrese: ");
                 bandera = 1;
@@ -113,6 +115,9 @@ void RegistrarMovimientoJugador(char tablero[][TAMLARGO], int filas, int columna
         if (!CasilleroVacio(tablero, fila, columna) && bandera == 0){ ///Verifico si esta vacia la posicion
             printf("\nCasillero ocupado, reingrese: ");
             bandera = 1;
+        }
+        if(bandera == 1){
+            movimiento = getchar();
         }
     } while(bandera == 1);
     EscribirTablero(tablero, fila, columna, jugadorChar); ///Escribo en el tablero
