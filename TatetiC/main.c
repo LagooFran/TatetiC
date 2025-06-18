@@ -179,6 +179,7 @@ int main()
                             turno = 0;
                         }
                         MostrarTablero(tablero);
+                        system("pause");
                         ganador = Ganador(tablero);
                     }
                     strcpy(pResFinal->jugador, pJug->nombre);

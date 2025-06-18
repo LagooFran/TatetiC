@@ -92,16 +92,27 @@ void EscribirTablero(char tablero[][TAMLARGO], int fil, int col, char caracter){
 }
 
 
+
 void RegistrarMovimientoJugador(char tablero[][TAMLARGO], int filas, int columnas, char jugadorChar){
     int bandera, fila, columna, casillero, limite;
     char movimiento, cadena[TAMTEXTO];
     limite = (TAMALTO*TAMLARGO + 56);
-    while (getchar() != '\n');                    ///Limpio el buffer
-    //fgets(cadena, sizeof(cadena), stdin);
-    scanf("%c", &movimiento);         ///Leo cadena y me quedo solo con el caracter valido
-    //movimiento = extraerCaracterValido(cadena);
+    while (getchar() != '\n' && !feof(stdin));       ///Limpio el buffer
+
+    int items_leidos;
+
     do{
         bandera = 0;
+
+        items_leidos = scanf(" %c", &movimiento);
+
+        if (items_leidos != 1) {
+            printf("\nMovimiento invalido, reingrese: ");
+            bandera = 1;
+            while (getchar() != '\n' && !feof(stdin));
+            continue;
+        }
+
         if(movimiento == '\n'){
             bandera = 1;
         }
@@ -111,17 +122,16 @@ void RegistrarMovimientoJugador(char tablero[][TAMLARGO], int filas, int columna
         }
         else{
             if(movimiento>= (int)(CIRCULO)) movimiento--; ///Salteo la letra 'O'
-            casillero = CHARAINT(movimiento);       ///Convierto el numero en fila y columna
-                    fila = (casillero-1)/TAMLARGO;
-                    columna = (casillero-1)%TAMLARGO;
+            casillero = CHARAINT(movimiento);        ///Convierto el numero en fila y columna
+                        fila = (casillero-1)/TAMLARGO;
+                        columna = (casillero-1)%TAMLARGO;
         }
         if (!CasilleroVacio(tablero, fila, columna) && bandera == 0){ ///Verifico si esta vacia la posicion
             printf("\nCasillero ocupado, reingrese: ");
             bandera = 1;
         }
         if(bandera == 1){
-            fgets(cadena, sizeof(cadena), stdin);
-            movimiento = extraerCaracterValido(cadena);
+            while (getchar() != '\n' && !feof(stdin));
         }
     } while(bandera == 1);
     EscribirTablero(tablero, fila, columna, jugadorChar); ///Escribo en el tablero
