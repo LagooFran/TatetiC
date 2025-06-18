@@ -9,6 +9,7 @@
 void MostrarTablero(char tablero[][TAMLARGO]){
     int fil, col;
 
+    system("cls");
     printf("\n");
 
     for(fil=0; fil<TAMALTO; fil++){

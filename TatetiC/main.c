@@ -120,6 +120,8 @@ int main()
                 RecorrerLista(pListaJug, MostrarJugador, sizeof(jugador));
 
                 ///empiezo el loop de juego
+                VaciarLista(pListaJugFinal);
+                CrearLista(pListaJugFinal);
                 while(ListaVacia(pListaJug) != 1){
                     ///al inicio de cada partido saco el primer jugador de la lista inicial.
                     SacarPrimeroLista(pListaJug, pJug);
@@ -153,6 +155,7 @@ int main()
                         if(turno == 0){
                             ///juega la maquina
                             printf("Movimiento de la %sMAQUINA%s:\n", colorMaquina, RESETCOLOR);
+                            system("pause");
                             SeleccionarMejorMovimiento(tablero, TAMLARGO, TAMALTO, maquinaChar, jugadorChar);
                             ///cambio el turno para que luego juegue el jugador
                             turno = 1;
@@ -166,50 +169,66 @@ int main()
                         }
                         MostrarTablero(tablero);
                         ganador = Ganador(tablero);
+                        system("pause");
 
                     }
                     strcpy(pResFinal->jugador, pJug->nombre);
                     if(ganador == GANACRUZ){
                         if(jugadorChar == CRUZ){
+                            system("cls");
                             printf("Gana el jugador\n");
-                            pJug->puntos = /*pJug->puntos+*/3;
+                            //pJug->puntos = /*pJug->puntos+*/3;
                             strcpy(pResFinal->ganador, pJug->nombre);
                             pResFinal->puntosGanados = 3;
                             pGrup->totalPuntos += 3;
+                            pJug->puntos += 3;
+                            system("pause");
                         }
                         else{
+                            system("cls");
                             printf("Gana la maquina\n");
-                            pJug->puntos = /*pJug->puntos*/-1;
+                            //pJug->puntos = /*pJug->puntos*/-1;
                             strcpy(pResFinal->ganador, "Maquina");
                             pResFinal->puntosGanados = -1;
                             pGrup->totalPuntos += -1;
+                            pJug->puntos += -1;
+                            system("pause");
                         }
 
                     }
                     else if(ganador == GANACIRCULO){
                         if(jugadorChar == CIRCULO){
+                            system("cls");
                             printf("Gana el jugador\n");
-                            pJug->puntos = /*pJug->puntos+*/3;
+                            //pJug->puntos = /*pJug->puntos+*/3;
                             strcpy(pResFinal->ganador, pJug->nombre);
                             pResFinal->puntosGanados = 3;
                             pGrup->totalPuntos += 3;
+                            pJug->puntos += 3;
+                            system("pause");
                         }
                         else{
+                            system("cls");
                             printf("Gana la maquina\n");
-                            pJug->puntos = /*pJug->puntos*/-1;
+                            //pJug->puntos = /*pJug->puntos*/-1;
                             strcpy(pResFinal->ganador, "Maquina");
                             pResFinal->puntosGanados = -1;
                             pGrup->totalPuntos += -1;
+                            pJug->puntos += -1;
+                            system("pause");
                         }
 
                     }
                     else if(ganador == EMPATE){
+                        system("cls");
                         printf("Empate\n");
-                        pJug->puntos = /*pJug->puntos +*/2;
+                        //pJug->puntos = /*pJug->puntos +*/2;
                         strcpy(pResFinal->ganador, "Empate: ");
                         strcat(pResFinal->ganador, pJug->nombre);
                         pResFinal->puntosGanados = 2;
                         pGrup->totalPuntos += 2;
+                        pJug->puntos += 2;
+                        system("pause");
 
                     }
 
@@ -225,12 +244,13 @@ int main()
                     ///cada vez que termina un juego actualizo los puntos del jugador
                    // pJug->puntos = pJug->puntos;// + puntosGanados; //Esto duplica los puntos?
                     ///y agrego al jugador con su puntuacion a la lista de grupo
-                    PonerAlFinal(pListaJugFinal, pJug, sizeof(jug));
+
                     ReiniciarTablero(tablero);
                     ganador = 0;
                     contPartidas++;
                     ///fin partida jugador
                     }
+                    PonerAlFinal(pListaJugFinal, pJug, sizeof(jug));
                     contPartidas = 0;
                 }
 
