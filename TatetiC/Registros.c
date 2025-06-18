@@ -120,7 +120,6 @@ char* GET_API(void)
     //Variables para el manejo del archivo
     char linea[MAXLINEA];
     char url[MAXLINEA];
-    char equipo[MAXLINEA];
     char *aux = linea;
 
     //Abro el archivo para recuperar la url
@@ -138,16 +137,10 @@ char* GET_API(void)
     //Remplazo el \n
     aux = strchr(linea, '\n');
     *aux = '\0';
-    //Obtengo el nombre del equipo
+    //Busco el pipe y lo reemplazo por un slash
     aux = strrchr(linea, '|');
-    strcpy(equipo, aux+1);
-    //Reemplazo el pipe por un \0 y obtengo la url
-    *aux = '\0';
+    *aux = '/';
     strcpy(url, linea);
-
-    //Formo la url completa concatenando ambas partes separadas por /
-    strcat(url, "/");
-    strcat(url, equipo);
 
     curl_global_init(CURL_GLOBAL_DEFAULT);
     curl = curl_easy_init();
