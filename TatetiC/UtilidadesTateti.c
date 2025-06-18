@@ -102,7 +102,10 @@ void RegistrarMovimientoJugador(char tablero[][TAMLARGO], int filas, int columna
 
     do{
         bandera = 0;
-        if((!ESMAYUSCULA(movimiento) && !ESNUMERO(movimiento)) || movimiento == '0' || (int)movimiento>=limite){
+        if(movimiento == '\n'){
+            bandera = 1;
+        }
+        if(((!ESMAYUSCULA(movimiento) && !ESNUMERO(movimiento)) || movimiento == '0' || (int)movimiento>=limite) && bandera == 0){
                 printf("\nMovimiento invalido, reingrese: ");
                 bandera = 1;
         }
