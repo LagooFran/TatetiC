@@ -141,8 +141,7 @@ char* GET_API(void)
     //Obtengo el nombre del equipo
     aux = strrchr(linea, '|');
     strcpy(equipo, aux+1);
-    //Reemplazo el primer pipe por un \0 y obtengo la url
-    aux -= 1;
+    //Reemplazo el pipe por un \0 y obtengo la url
     *aux = '\0';
     strcpy(url, linea);
 
@@ -248,8 +247,7 @@ void POST_API(char* pJSON)
 
     //Encuentra el segundo pipe
     aux = strrchr(linea, '|');
-    //Reemplazo el primer pipe por un \0 y obtengo la url
-    aux -= 1;
+    //Reemplazo el pipe por un \0 y obtengo la url
     *aux = '\0';
     strcpy(url, linea);
 

@@ -35,7 +35,8 @@ int main()
     int cantPartidasXJug = 1, contPartidas = 0;
     char tablero[TAMALTO][TAMLARGO];
     char jugadorChar, maquinaChar;
-    ///char validador;
+    int validador;
+    int c;
     char colorJugador[15], colorMaquina[15];
     ReiniciarTablero(tablero);
 
@@ -52,10 +53,6 @@ int main()
     tLista *pListaJugFinal = &listaJugFinal;
     CrearLista(pListaJugFinal);
 
-    tLista listaJugMostrar;
-    tLista *pListaJugMostrar = &listaJugMostrar;
-    CrearLista(pListaJugMostrar);
-
     tLista listaPartidas;
     tLista *pListaPartidas = &listaPartidas; ///lista para guardar las partidas y luego guardarlas en el txt
     CrearLista(pListaPartidas);
@@ -65,7 +62,6 @@ int main()
 
     printf("Cargando...\n");
 
-    CargarJugadoresDesdeAPI(pListaJugMostrar);
     cantPartidasXJug = ObtenerCantidadDePartidas();
 
     if(cantPartidasXJug < 1){
@@ -98,13 +94,13 @@ int main()
 
                 ///el struct grupo contiene una lista de jugadores
                 printf("\nIngrese la cantidad de jugadores: ");
-                //validador =
-                scanf(" %d", &pGrup->cantJugadores);
-                /*while(validador != 1){
+                validador = scanf(" %d", &pGrup->cantJugadores);
+                while(validador != 1){
+                    while ((c = getchar()) != '\n' && c != EOF);//Limpia el buffer de teclado
                     printf("\nEl valor debe ser numerico...");
                     printf("\nIngrese la cantidad de jugadores: ");
                     validador = scanf(" %d", &pGrup->cantJugadores);
-                }*/
+                }
                 printf("\nCarga de jugadores:\n");
                 CrearLista(pListaJug);
 
@@ -237,18 +233,22 @@ int main()
                 pGrup->jugadores = pListaJugFinal;
                 ///muestro los jugadores y sus puntos
                 RecorrerLista(pGrup->jugadores, MostrarJugadorYPuntos, sizeof(jugador));
+                printf("\nPuntos conseguidos por el grupo %s%s%s: %d", colorJugador, pGrup->nombreGrupo, RESETCOLOR, pGrup->totalPuntos);
                 ///una vez se termina con todo eso habria que usar pListaJugFinal para contactar con la api y crear el archivo de registro
                 GenerarArchivoResumen(pListaPartidas, pListaJugFinal);
                 CrearJSON(pListaJugFinal);
                 bandera = 0;
+                while ((c = getchar()) != '\n' && c != EOF);//Limpia el buffer de teclado
                 break;
 
             case 'B':
                 system("cls");
                 //Ordeno la lista
-                ordenar(pListaJugMostrar,OrdenarPuntosDescendente);
+                VaciarLista(pListaJugFinal);
+                CargarJugadoresDesdeAPI(pListaJugFinal);
+                ordenar(pListaJugFinal,OrdenarPuntosDescendente);
                 printf("RANKING: \n");
-                RecorrerLista(pListaJugMostrar, MostrarJugadorYPuntos, sizeof(jugador));
+                RecorrerLista(pListaJugFinal, MostrarJugadorYPuntos, sizeof(jugador));
                 printf("\n\n");
                 bandera = 0;
                 break;
@@ -256,7 +256,6 @@ int main()
                 printf("Saliendo...");
                 VaciarLista(pListaJug);
                 VaciarLista(pListaJugFinal);
-                VaciarLista(pListaJugMostrar);
                 VaciarLista(pListaPartidas);
                 salir = 1;
                 break;
