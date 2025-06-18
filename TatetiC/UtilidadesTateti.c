@@ -74,7 +74,7 @@ void RandomizarLista(tLista *lista){
 
 }
 
-int EmpezarPartida(char tablero[][TAMLARGO]){ ///Inicia la partida, retorna quien tendra el primer movimiento 0 = jugador, 1 = maquina.
+int EmpezarPartida(char tablero[][TAMLARGO]){ //Inicia la partida, retorna quien tendra el primer movimiento 0 = jugador, 1 = maquina.
     int aleatorio;
     srand(time(NULL));
     ReiniciarTablero(tablero);
@@ -95,9 +95,9 @@ void EscribirTablero(char tablero[][TAMLARGO], int fil, int col, char caracter){
 
 void RegistrarMovimientoJugador(char tablero[][TAMLARGO], int filas, int columnas, char jugadorChar){
     int bandera, fila, columna, casillero, limite;
-    char movimiento, cadena[TAMTEXTO];
+    char movimiento;
     limite = (TAMALTO*TAMLARGO + 56);
-    while (getchar() != '\n' && !feof(stdin));       ///Limpio el buffer
+    while (getchar() != '\n' && !feof(stdin));       //Limpio el buffer
 
     int items_leidos;
 
@@ -121,12 +121,12 @@ void RegistrarMovimientoJugador(char tablero[][TAMLARGO], int filas, int columna
                 bandera = 1;
         }
         else{
-            if(movimiento>= (int)(CIRCULO)) movimiento--; ///Salteo la letra 'O'
-            casillero = CHARAINT(movimiento);        ///Convierto el numero en fila y columna
+            if(movimiento>= (int)(CIRCULO)) movimiento--;    //Salteo la letra 'O'
+            casillero = CHARAINT(movimiento);                //Convierto el numero en fila y columna
                         fila = (casillero-1)/TAMLARGO;
                         columna = (casillero-1)%TAMLARGO;
         }
-        if (!CasilleroVacio(tablero, fila, columna) && bandera == 0){ ///Verifico si esta vacia la posicion
+        if (!CasilleroVacio(tablero, fila, columna) && bandera == 0){ //Verifico si esta vacia la posicion
             printf("\nCasillero ocupado, reingrese: ");
             bandera = 1;
         }
@@ -134,7 +134,7 @@ void RegistrarMovimientoJugador(char tablero[][TAMLARGO], int filas, int columna
             while (getchar() != '\n' && !feof(stdin));
         }
     } while(bandera == 1);
-    EscribirTablero(tablero, fila, columna, jugadorChar); ///Escribo en el tablero
+    EscribirTablero(tablero, fila, columna, jugadorChar); //Escribo en el tablero
 }
 
 int OrdenarPuntosDescendente(void *a, void *b){
@@ -187,7 +187,7 @@ void GenerarArchivoResumen(tLista *listaPartidas, tLista *listaJugadores){
     strcat(nombreArchivo, ".txt");
 
     FILE *archivo;
-    if(!(archivo = fopen(nombreArchivo, "a"))){ //ACA FALTA VALIDAR SI SE ABRIO BIEN EL ARCHIVO
+    if(!(archivo = fopen(nombreArchivo, "a"))){
         printf("\n Error al generar el archivo LOG");
         //No retorno nada para que igualmente envie los datos a la api y libere memoria
     }
@@ -207,7 +207,7 @@ void GenerarArchivoResumen(tLista *listaPartidas, tLista *listaJugadores){
             fputs(temp, archivo);
             fputs("\n", archivo);
 
-            ///printeo el tablero al archivo
+            //printeo el tablero al archivo
             for (int i = 0; i < TAMALTO; i++) {
                 fprintf(archivo, "  ");
                 for (int j = 0; j < TAMLARGO; j++) {
@@ -258,15 +258,4 @@ int ObtenerCantidadDePartidas(){
 
     fclose(pArch); //Cierro el archivo porque no lo uso mas
     return cantPart;
-}
-
-char extraerCaracterValido(const char *cadena) {
-    while (*cadena != '\0') {
-        if (!isspace((unsigned char)*cadena)) { ///Busco el primer caracter útil (no espacio)
-            return *cadena;
-        }
-        cadena++;
-    }
-
-    return '\0';  /// No se encontró ningún carácter útil
 }
