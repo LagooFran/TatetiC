@@ -157,6 +157,7 @@ int main()
                         printf("Jugador %s: %s%c%s\n", pJug->nombre, colorJugador, jugadorChar, RESETCOLOR);
                         printf("Maquina: %s%c%s\n", colorMaquina, maquinaChar, RESETCOLOR);
                     }
+                    //system("pause");
                     MostrarTablero(tablero);
                     while(ganador == 0){
 
@@ -179,8 +180,6 @@ int main()
                         }
                         MostrarTablero(tablero);
                         ganador = Ganador(tablero);
-                        system("pause");
-
                     }
                     strcpy(pResFinal->jugador, pJug->nombre);
                     if(ganador == GANACRUZ){

@@ -97,9 +97,9 @@ void RegistrarMovimientoJugador(char tablero[][TAMLARGO], int filas, int columna
     char movimiento, cadena[TAMTEXTO];
     limite = (TAMALTO*TAMLARGO + 56);
     while (getchar() != '\n');                    ///Limpio el buffer
-    fgets(cadena, sizeof(cadena), stdin);         ///Leo cadena y me quedo solo con el caracter valido
-    movimiento = extraerCaracterValido(cadena);
-
+    //fgets(cadena, sizeof(cadena), stdin);
+    scanf("%c", &movimiento);         ///Leo cadena y me quedo solo con el caracter valido
+    //movimiento = extraerCaracterValido(cadena);
     do{
         bandera = 0;
         if(movimiento == '\n'){
