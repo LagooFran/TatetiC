@@ -39,6 +39,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Lista.h" />
+		<Unit filename="Registros.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Registros.h" />
 		<Unit filename="UtilidadesTateti.c">
 			<Option compilerVar="CC" />

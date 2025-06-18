@@ -279,7 +279,7 @@ int Validar_API(void)
     //Variables para el get
     CURL *curl;
     CURLcode res;
-    int codigo;
+    long codigo;
 
     //Variables para el manejo del archivo
     char linea[MAXLINEA];

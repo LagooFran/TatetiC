@@ -38,12 +38,12 @@
 1750204630 source:c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\lista.c
 	"Lista.h"
 
-1750258919 source:c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\main.c
+1750266771 source:c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\main.c
 	"UtilidadesTateti.h"
 	"AlgoritmoJugador.h"
 	"Registros.h"
 
-1750199961 c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\registros.h
+1750265364 c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\registros.h
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
@@ -51,11 +51,11 @@
 	"cJSON.h"
 	"UtilidadesTateti.h"
 
-1750259407 source:c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\utilidadestateti.c
+1750266589 source:c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\utilidadestateti.c
 	"UtilidadesTateti.h"
 	"AlgoritmoJugador.h"
 
-1750256813 source:c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\registros.c
+1750265582 source:c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\registros.c
 	"Registros.h"
 	<curl/curl.h>
 

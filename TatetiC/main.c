@@ -32,6 +32,7 @@ int main()
     int turno;
     int ganador = 0;
     int bandera = 0;
+    int offline = 0;
     int cantPartidasXJug = 1, contPartidas = 0;
     char tablero[TAMALTO][TAMLARGO];
     char jugadorChar, maquinaChar;
@@ -71,7 +72,8 @@ int main()
     }
 
     if(Validar_API()!= 200){
-        printf("\nLa URL que apunta la API no es valida o no se puede establecer la conexion.\n");
+        printf("\nLa URL que apunta la API no es valida o no se puede establecer la conexion. Forzando Modo OFFLINE. Sus partidas no seran guardadas\n");
+        offline = 1;
         system("pause");
     }
 
@@ -80,7 +82,9 @@ int main()
 
     ///Menu para tateti
     printf("%s\tTatetiC!%s", AMARILLO,RESETCOLOR);
-
+    if(offline == 1){
+        printf(" %s|| Modo Offline.%s", ROJO, RESETCOLOR);
+    }
     while(salir!= 1){
         if (bandera == 0) printf("\n\n\n[A] Comenzar a jugar\n[B] Ver ranking\n[C] Salir\n\n");
         seleccion = getchar();
@@ -123,6 +127,7 @@ int main()
                 printf("GRUPO: %s\n\n", pGrup->nombreGrupo);
                 printf("Orden de juego: \n");
                 RecorrerLista(pListaJug, MostrarJugador, sizeof(jugador));
+                system("pause");
 
                 ///empiezo el loop de juego
                 VaciarLista(pListaJugFinal);
@@ -272,17 +277,26 @@ int main()
                 break;
 
             case 'B':
-                system("cls");
-                //Ordeno la lista
-                VaciarLista(pListaJugFinal);
-                CargarJugadoresDesdeAPI(pListaJugFinal);
-                ordenar(pListaJugFinal,OrdenarPuntosDescendente);
-                printf("RANKING: \n");
-                RecorrerLista(pListaJugFinal, MostrarJugadorYPuntos, sizeof(jugador));
-                VaciarLista(pListaJugFinal);
-                printf("\n\n");
-                bandera = 0;
-                break;
+                if(offline != 1){
+                    system("cls");
+                    //Ordeno la lista
+                    VaciarLista(pListaJugFinal);
+                    CargarJugadoresDesdeAPI(pListaJugFinal);
+                    ordenar(pListaJugFinal,OrdenarPuntosDescendente);
+                    printf("RANKING: \n");
+                    RecorrerLista(pListaJugFinal, MostrarJugadorYPuntos, sizeof(jugador));
+                    VaciarLista(pListaJugFinal);
+                    printf("\n\n");
+                    bandera = 0;
+                    break;
+                }
+                else{
+                    system("cls");
+                    printf("%sRanking Desactivado. Usted esta en modo Offline\n%s", ROJO, RESETCOLOR);
+                    system("pause");
+                    break;
+                }
+
 
             case 'C':
                 printf("Saliendo...");

@@ -225,7 +225,7 @@ int ObtenerCantidadDePartidas(){
     FILE* pArch;
     if(!(pArch = (fopen("Config.TXT", "rt"
                         )))){
-        printf("\n\nError al abrir el Config.TXT");
+        printf("\n\nError al abrir el Config.TXT\n");
         return -1;
     }
 
