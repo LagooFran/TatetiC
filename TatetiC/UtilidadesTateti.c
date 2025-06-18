@@ -166,8 +166,6 @@ void GenerarArchivoResumen(tLista *listaPartidas, tLista *listaJugadores){
     strcat(nombreArchivo, fecha);
     strcat(nombreArchivo, ".txt");
 
-    printf("[DEBUG] CrearJSON: File '%s' opened successfully.\n", nombreArchivo);
-
     FILE *archivo;
     if(!(archivo = fopen(nombreArchivo, "a"))){ //ACA FALTA VALIDAR SI SE ABRIO BIEN EL ARCHIVO
         printf("\n Error al generar el archivo LOG");

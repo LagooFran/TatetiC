@@ -33,8 +33,6 @@ Recibe un puntero a una lista de jugadores
     strcat(nombreArchivo, fecha);
     strcat(nombreArchivo, ".txt");
 
-    printf("[DEBUG] CrearJSON: File '%s' opened successfully.\n", nombreArchivo);
-
     // Convertir a string y guardar
     char *json = cJSON_Print(raiz); // Para formato legible
     FILE *archivo;
