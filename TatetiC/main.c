@@ -70,6 +70,11 @@ int main()
         system("pause");
     }
 
+    if(Validar_API()!= 200){
+        printf("\nLa URL que apunta la API no es valida o no se puede establecer la conexion.\n");
+        system("pause");
+    }
+
     system("chcp 65001"); ///Setea la consola de windows para poder usar caracteres UTF-8
     system("cls");
 

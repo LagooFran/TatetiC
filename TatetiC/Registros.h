@@ -17,6 +17,7 @@ void AgregarJugadores(tLista *, cJSON *);
 void ObtenerFecha(char *, size_t);
 void RecuperarDatos(grupo *, const char *);
 void CargarJugadoresDesdeAPI(tLista*);
+int Validar_API();
 
 
 #endif // REGISTROS_H_INCLUDED

@@ -273,6 +273,94 @@ void POST_API(char* pJSON)
 }
 
 
+//Realiza un GET y valida si la url es correcta segun el codigo de respuesta
+int Validar_API(void)
+{
+    //Variables para el get
+    CURL *curl;
+    CURLcode res;
+    int codigo;
+
+    //Variables para el manejo del archivo
+    char linea[MAXLINEA];
+    char url[MAXLINEA];
+    char *aux = linea;
+
+    //Abro el archivo para recuperar la url
+    FILE* pArch;
+    if(!(pArch = (fopen("Config.TXT", "rt"
+                        )))){
+        printf("\n\nError al abrir el Config.TXT\n");
+        return -1;
+    }
+
+    //Obtengo la  primera linea
+    fgets(linea, MAXLINEA, pArch);
+    fclose(pArch); //Cierro el archivo porque no lo uso mas
+
+    //Remplazo el \n
+    aux = strchr(linea, '\n');
+    *aux = '\0';
+    //Busco el pipe y lo reemplazo por un slash
+    aux = strrchr(linea, '|');
+    *aux = '/';
+    strcpy(url, linea);
+
+    curl_global_init(CURL_GLOBAL_DEFAULT);
+    curl = curl_easy_init();
+
+    if (curl)
+    {
+        curl_easy_setopt(curl, CURLOPT_URL, url); //"https://algoritmos-api.azurewebsites.net/api/TaCTi/direccion"
+
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+
+        res = curl_easy_perform(curl);
+
+        if (res != CURLE_OK)
+            fprintf(stderr, "Error en la solicitud: %s\n", curl_easy_strerror(res));
+        else
+            curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &codigo);
+
+        //curl_slist_free_all(headers);
+        curl_easy_cleanup(curl);
+    }
+
+    curl_global_cleanup();
+
+    return codigo;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
