@@ -53,3 +53,10 @@ https://algoritmos-api.azurewebsites.net/api/TaCTi|direccion
 2
 ```
 
+
+## Autores
+
+- Arenas Velasco, Artin Leonel [@Alanbst](https://github.com/AArtin001)
+- Bustamante, Alan Gabriel [@AArtin01](https://github.com/Alanbst)
+- Lago, Franco Nehuen [@LagooFran](https://github.com/LagooFran)
+
