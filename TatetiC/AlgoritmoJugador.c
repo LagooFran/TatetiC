@@ -50,9 +50,9 @@ int Ganador(char tablero[][TAMLARGO]){ ///retorna 1 = si gano la O |-1 = si gano
     ///recorro diagonal inversa
     if (TAMALTO>TAMLARGO) linea = TAMALTO;
     else linea = TAMLARGO;
-    col = TAMLARGO;
+    col = TAMLARGO-1;
     fil = 0;
-    while (col>0 && fil<TAMALTO){
+    while (col>=0 && fil<TAMALTO){
         if(tablero[fil][col] == CRUZ) x ++;
         else if(tablero[fil][col] == CIRCULO) o ++;
         col--;

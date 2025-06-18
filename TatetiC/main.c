@@ -32,26 +32,47 @@ int main()
     int turno;
     int ganador = 0;
     int bandera = 0;
+    int cantPartidasXJug = 1, contPartidas = 0;
     char tablero[TAMALTO][TAMLARGO];
     char jugadorChar, maquinaChar;
-    char validador;
+    ///char validador;
     char colorJugador[15], colorMaquina[15];
     ReiniciarTablero(tablero);
+
     jugador jug;
     jugador *pJug = &jug;
     grupo grup;
     grupo *pGrup = &grup;
+
     tLista listaJug;
     tLista *pListaJug = &listaJug;
+    CrearLista(pListaJug);
+
     tLista listaJugFinal;
     tLista *pListaJugFinal = &listaJugFinal;
+    CrearLista(pListaJugFinal);
 
     tLista listaJugMostrar;
     tLista *pListaJugMostrar = &listaJugMostrar;
+    CrearLista(pListaJugMostrar);
+
+    tLista listaPartidas;
+    tLista *pListaPartidas = &listaPartidas; ///lista para guardar las partidas y luego guardarlas en el txt
+    CrearLista(pListaPartidas);
+
+    partidaResumen resFinal = {0};
+    partidaResumen *pResFinal = &resFinal; ///estructura para guardar en la lista de partidas
+
+    printf("Cargando...\n");
+
     CargarJugadoresDesdeAPI(pListaJugMostrar);
+    cantPartidasXJug = ObtenerCantidadDePartidas();
 
-
-
+    if(cantPartidasXJug < 1){
+        printf("La cantidad de partidas por jugador es incorrecta por favor verifique el archivo config. Volviendo a la configuracion por defecto (1)\n");
+        cantPartidasXJug = 1;
+        system("pause");
+    }
 
     system("chcp 65001"); ///Setea la consola de windows para poder usar caracteres UTF-8
     system("cls");
@@ -103,11 +124,15 @@ int main()
                 RecorrerLista(pListaJug, MostrarJugador, sizeof(jugador));
 
                 ///empiezo el loop de juego
-                CrearLista(pListaJugFinal);
                 while(ListaVacia(pListaJug) != 1){
                     ///al inicio de cada partido saco el primer jugador de la lista inicial.
                     SacarPrimeroLista(pListaJug, pJug);
+
+                    while(contPartidas < cantPartidasXJug){
+                    ///partida jugdador
                     turno = EmpezarPartida(tablero);
+
+                    memset(&resFinal, 0, sizeof(partidaResumen));
                     if(turno == 0){
                         maquinaChar = CRUZ;
                         jugadorChar = CIRCULO;
@@ -147,15 +172,19 @@ int main()
                         ganador = Ganador(tablero);
 
                     }
-
+                    strcpy(pResFinal->jugador, pJug->nombre);
                     if(ganador == GANACRUZ){
                         if(jugadorChar == CRUZ){
                             printf("Gana el jugador\n");
                             pJug->puntos = pJug->puntos+3;
+                            strcpy(pResFinal->ganador, pJug->nombre);
+                            pResFinal->puntosGanados = 3;
                         }
                         else{
                             printf("Gana la maquina\n");
                             pJug->puntos = pJug->puntos-1;
+                            strcpy(pResFinal->ganador, "Maquina");
+                            pResFinal->puntosGanados = -1;
                         }
 
                     }
@@ -163,18 +192,34 @@ int main()
                         if(jugadorChar == CIRCULO){
                             printf("Gana el jugador\n");
                             pJug->puntos = pJug->puntos+3;
+                            strcpy(pResFinal->ganador, pJug->nombre);
+                            pResFinal->puntosGanados = 3;
                         }
                         else{
                             printf("Gana la maquina\n");
                             pJug->puntos = pJug->puntos-1;
+                            strcpy(pResFinal->ganador, "Maquina");
+                            pResFinal->puntosGanados = -1;
                         }
 
                     }
                     else if(ganador == EMPATE){
                         printf("Empate");
                         pJug->puntos = pJug->puntos+2;
+                        strcpy(pResFinal->ganador, "Empate: ");
+                        strcat(pResFinal->ganador, pJug->nombre);
+                        pResFinal->puntosGanados = 2;
+
                     }
 
+                    ///copio el tablero al final de la partida en la lista de partidas jugadas
+                    for(int i = 0; i < TAMALTO; i++) {
+                        for(int j = 0; j < TAMLARGO; j++) {
+                            pResFinal->tableroFinal[i][j] = tablero[i][j];
+                        }
+                    }
+
+                    PonerAlFinal(pListaPartidas, pResFinal, sizeof(partidaResumen));
 
                     ///cada vez que termina un juego actualizo los puntos del jugador
                     pJug->puntos = pJug->puntos + puntosGanados;
@@ -182,6 +227,10 @@ int main()
                     PonerAlFinal(pListaJugFinal, pJug, sizeof(jug));
                     ReiniciarTablero(tablero);
                     ganador = 0;
+                    contPartidas++;
+                    ///fin partida jugador
+                    }
+                    contPartidas = 0;
                 }
 
                 ///Una vez terminados todos los juegos agrego la lista al struct del grupo
@@ -189,7 +238,7 @@ int main()
                 ///muestro los jugadores y sus puntos
                 RecorrerLista(pGrup->jugadores, MostrarJugadorYPuntos, sizeof(jugador));
                 ///una vez se termina con todo eso habria que usar pListaJugFinal para contactar con la api y crear el archivo de registro
-
+                GenerarArchivoResumen(pListaPartidas, pListaJugFinal);
                 CrearJSON(pListaJugFinal);
                 bandera = 0;
                 break;
@@ -205,6 +254,10 @@ int main()
                 break;
             case 'C':
                 printf("Saliendo...");
+                VaciarLista(pListaJug);
+                VaciarLista(pListaJugFinal);
+                VaciarLista(pListaJugMostrar);
+                VaciarLista(pListaPartidas);
                 salir = 1;
                 break;
             default:

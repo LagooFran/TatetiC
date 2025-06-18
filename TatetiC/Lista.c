@@ -29,22 +29,6 @@ int ListaLlena(const tLista *lista, size_t tamData){
     return 0; ///Hay espacio suficiente.
 }
 
-int VaciarLista(tLista *lista){
-
-    int cont = 0;
-    tNodo *aux = *lista;
-
-    while(*lista != NULL){
-        *lista = aux->sig;
-        free(aux->data);
-        free(aux);
-        aux = *lista;
-        cont++;
-    }
-
-    return cont; ///Se borraron todos los nodos. Retorna la cantidad de nodos borrados.
-}
-
 int PonerAlComienzo(tLista *lista, void *data, size_t tamData){
     ///chequeo lista llena.. esto deberia copiarse al codigo de la funcion porque es una primitiva.
     if(ListaLlena(lista, tamData)){
@@ -222,16 +206,21 @@ int SacarPrimeroLista(tLista *lista, void *dataDest){
 }
 
 void RecorrerLista(tLista *lista, void (*accion)(void *), size_t dataSize){
-
-    void *aux;
-    while(*lista){
-        aux = malloc(dataSize);
-        memcpy(aux, (*lista)->data, dataSize);
-        accion(aux);
-        free(aux);
-        lista = &(*lista)->sig;
+    tNodo *nodoActual = *lista;
+    while(nodoActual != NULL){
+        accion(nodoActual->data);
+        nodoActual = nodoActual->sig;
     }
 }
+
+void RecorrerListaEnContexto(tLista *lista, void (*accion)(void *, void *), void *contexto){
+    tNodo *nodoActual = *lista;
+    while(nodoActual != NULL){
+        accion(nodoActual->data, contexto);
+        nodoActual = nodoActual->sig;
+    }
+}
+
 
 
 void ordenar(tLista *p, int (*comparar)(void *, void *)){
@@ -258,3 +247,26 @@ void ordenar(tLista *p, int (*comparar)(void *, void *)){
     }
 }
 
+void VaciarLista(tLista *lista){
+    tNodo *nodoActual;
+    tNodo *nodoSiguiente;
+
+    nodoActual = *lista;
+
+    while(nodoActual != NULL){
+
+        nodoSiguiente = nodoActual->sig;
+
+        if(nodoActual->data != NULL){
+            free(nodoActual->data);
+            nodoActual->data = NULL;
+        }
+
+        free(nodoActual);
+        nodoActual = NULL;
+
+        nodoActual = nodoSiguiente;
+    }
+
+    *lista = NULL;
+}

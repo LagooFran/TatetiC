@@ -9,6 +9,8 @@
 #define GANACIRCULO 1
 #define GANACRUZ -1
 #define EMPATE 2
+#define TAM_NOMBRE 300
+#define TAM_FECHA 100
 
 
 int Ganador(char[][TAMLARGO]);

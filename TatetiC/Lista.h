@@ -16,7 +16,6 @@ typedef tNodo *tLista;
 int CrearLista(tLista *);
 int ListaVacia(const tLista *);
 int ListaLlena(const tLista *, size_t);
-int VaciarLista(tLista *);
 int PonerAlComienzo(tLista *, void *, size_t);
 int PonerAlFinal(tLista *, void *, size_t);
 int PonerEnLista(tLista *, void *, size_t, int);
@@ -26,6 +25,8 @@ int SacarPrimeroLista(tLista *, void *);
 int SacarUltimoLista(const tLista *, void *);
 void RecorrerLista(tLista *, void (*accion)(void *), size_t);
 void ordenar(tLista *, int (*comparar)(void *, void *));
+void RecorrerListaEnContexto(tLista *, void (*accion)(void *, void *), void *);
+void VaciarLista(tLista *);
 
 
 

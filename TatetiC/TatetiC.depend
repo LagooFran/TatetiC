@@ -120,3 +120,63 @@
 	<locale.h>
 	"cJSON.h"
 
+1750203907 source:c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\algoritmojugador.c
+	"AlgoritmoJugador.h"
+	"UtilidadesTateti.h"
+
+1750193463 c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\algoritmojugador.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"UtilidadesTateti.h"
+
+1750201504 c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\utilidadestateti.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	"Lista.h"
+
+1750204635 c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\lista.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1750204630 source:c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\lista.c
+	"Lista.h"
+
+1750204718 source:c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\main.c
+	"UtilidadesTateti.h"
+	"AlgoritmoJugador.h"
+	"Registros.h"
+
+1750199961 c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\registros.h
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	"cJSON.h"
+	"UtilidadesTateti.h"
+
+1750189175 c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\cjson.h
+	<stddef.h>
+
+1750203282 source:c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\utilidadestateti.c
+	"UtilidadesTateti.h"
+	"AlgoritmoJugador.h"
+
+1750189175 source:c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\cjson.c
+	<string.h>
+	<stdio.h>
+	<math.h>
+	<stdlib.h>
+	<limits.h>
+	<ctype.h>
+	<float.h>
+	<locale.h>
+	"cJSON.h"
+
+1750199970 source:c:\users\fran0\onedrive\documentos\github\tatetic\tatetic\registros.c
+	"Registros.h"
+	<curl/curl.h>
+

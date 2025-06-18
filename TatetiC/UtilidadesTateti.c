@@ -128,3 +128,117 @@ int OrdenarPuntosDescendente(void *a, void *b){
     return 0;
 }
 
+void ObtenerFecha2(char *fecha, size_t tam){
+
+
+    time_t t;
+    struct tm *tm_info;
+
+    t = time(NULL);
+    tm_info = localtime(&t); // Obtiene la fecha y hora local
+
+    strftime(fecha, tam, "%Y-%m-%d-%H-%M", tm_info);
+
+    return;
+}
+
+void  CargarRanking(void *datos, void *contexto){
+    char temp[TAMTEXTO*2+20];
+
+    jugador *pJug = (jugador *)datos;
+    FILE *archivo = (FILE *)contexto;
+    strcpy(temp, "");
+    sprintf(temp, "Jugador: %s Puntos: %d \n", pJug->nombre, pJug->puntos);
+    fputs(temp, archivo);
+}
+
+void GenerarArchivoResumen(tLista *listaPartidas, tLista *listaJugadores){
+
+    char fecha[TAM_FECHA];
+    char nombreArchivo[TAM_NOMBRE];
+    char temp[TAMTEXTO*2+20];
+    char tempPuntos[4];
+    partidaResumen part;
+    partidaResumen *pPart = &part;
+
+    ObtenerFecha2(fecha, TAM_FECHA);
+    strcpy(nombreArchivo, "informe_juego_");
+    strcat(nombreArchivo, fecha);
+    strcat(nombreArchivo, ".txt");
+
+    printf("[DEBUG] CrearJSON: File '%s' opened successfully.\n", nombreArchivo);
+
+    FILE *archivo;
+    if(!(archivo = fopen(nombreArchivo, "a"))){ //ACA FALTA VALIDAR SI SE ABRIO BIEN EL ARCHIVO
+        printf("\n Error al generar el archivo LOG");
+        //No retorno nada para que igualmente envie los datos a la api y libere memoria
+    }
+    if (archivo) {
+        while(!ListaVacia(listaPartidas)){
+
+
+            SacarPrimeroLista(listaPartidas, pPart);
+
+            strcat(pPart->jugador, " vs Maquina");
+            fputs(pPart->jugador, archivo);
+            fputs("\n", archivo);
+
+            strcpy(temp, "");
+            strcat(temp, "Resultado/Ganador: ");
+            strcat(temp, pPart->ganador);
+            fputs(temp, archivo);
+            fputs("\n", archivo);
+
+            ///printeo el tablero al archivo
+            for (int i = 0; i < TAMALTO; i++) {
+                fprintf(archivo, "  ");
+                for (int j = 0; j < TAMLARGO; j++) {
+                    fprintf(archivo, "%c ", pPart->tableroFinal[i][j]);
+                }
+                fprintf(archivo, "\n");
+            }
+
+            fprintf(archivo, "\n");
+            strcpy(temp, "");
+            strcat(temp, "Cambio en puntos: ");
+            sprintf(tempPuntos, "%d", pPart->puntosGanados);
+            strcat(temp, tempPuntos);
+            fputs(temp, archivo);
+            fputs("\n", archivo);
+            fprintf(archivo, "-------------------------------");
+            fprintf(archivo, "\n");
+
+        }
+
+        fprintf(archivo, "Ranking Jugadores Local: \n");
+        ordenar(listaJugadores, OrdenarPuntosDescendente);
+        RecorrerListaEnContexto(listaJugadores, CargarRanking, archivo);
+        fclose(archivo);
+    }
+
+}
+
+int ObtenerCantidadDePartidas(){
+    char linea[MAXLINEA];
+    int cantPart;
+
+    //Abro el archivo para recuperar la url
+    FILE* pArch;
+    if(!(pArch = (fopen("Config.TXT", "rt"
+                        )))){
+        printf("\n\nError al abrir el Config.TXT");
+        return -1;
+    }
+
+    //Obtengo la  primera linea
+    fgets(linea, MAXLINEA, pArch);
+    //Obtengo la segunda linea
+    fgets(linea, MAXLINEA, pArch);
+
+    //la segunda linea contiene el numero de partidas por jugador sin ningun extra.
+    sscanf(linea, "%d", &cantPart);
+
+    fclose(pArch); //Cierro el archivo porque no lo uso mas
+    return cantPart;
+}
+

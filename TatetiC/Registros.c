@@ -1,6 +1,6 @@
-//#include "Registros.h"
-//#include <curl/curl.h>
-#define MAXLINEA 300
+#include "Registros.h"
+#include <curl/curl.h>
+
 
 void POST_API(char*);
 
@@ -27,11 +27,13 @@ Recibe un puntero a una lista de jugadores
     cJSON_AddItemToObject(raiz, "jugadores", jugadores);
 
     // Genero el nombre del json
+
     ObtenerFecha(fecha, TAM_FECHA);
-    strcpy(nombreArchivo, "informe_juego_");
+    strcpy(nombreArchivo, "informe_juego_json");
     strcat(nombreArchivo, fecha);
     strcat(nombreArchivo, ".txt");
 
+    printf("[DEBUG] CrearJSON: File '%s' opened successfully.\n", nombreArchivo);
 
     // Convertir a string y guardar
     char *json = cJSON_Print(raiz); // Para formato legible
@@ -44,6 +46,7 @@ Recibe un puntero a una lista de jugadores
         fputs(json, archivo);
         fclose(archivo);
     }
+
 
     POST_API(json);
 
@@ -69,6 +72,7 @@ void AgregarJugadores(tLista *lJugadores, cJSON *aJugadores) {
     cJSON_AddItemToArray(aJugadores, jugador);
     }
 }
+
 
 void ObtenerFecha(char *fecha, size_t tam){
 

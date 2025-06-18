@@ -10,7 +10,7 @@
 #include "UtilidadesTateti.h"
 #define TAM_NOMBRE 300
 #define TAM_FECHA 100
-
+#define MAXLINEA 300
 
 void CrearJSON(tLista *);
 void AgregarJugadores(tLista *, cJSON *);
