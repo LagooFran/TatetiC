@@ -1,10 +1,10 @@
 #include "UtilidadesTateti.h"
 #include "AlgoritmoJugador.h"
+#include <ctype.h>
 
 #define CHARAINT(c) \
     (((c) >= '0' && (c) <= '9') ? ((c) - '0') : \
     ((c) >= 'A' && (c) <= 'Z') ? ((c) - 'A' + 10) : -1)
-
 
 void MostrarTablero(char tablero[][TAMLARGO]){
     int fil, col;
@@ -94,11 +94,11 @@ void EscribirTablero(char tablero[][TAMLARGO], int fil, int col, char caracter){
 
 void RegistrarMovimientoJugador(char tablero[][TAMLARGO], int filas, int columnas, char jugadorChar){
     int bandera, fila, columna, casillero, limite;
-    char movimiento;
+    char movimiento, cadena[TAMTEXTO];
     limite = (TAMALTO*TAMLARGO + 56);
-
-    while (getchar() != '\n'); /// Limpio el buffer
-        movimiento = getchar();
+    while (getchar() != '\n');                    ///Limpio el buffer
+    fgets(cadena, sizeof(cadena), stdin);         ///Leo cadena y me quedo solo con el caracter valido
+    movimiento = extraerCaracterValido(cadena);
 
     do{
         bandera = 0;
@@ -120,7 +120,8 @@ void RegistrarMovimientoJugador(char tablero[][TAMLARGO], int filas, int columna
             bandera = 1;
         }
         if(bandera == 1){
-            movimiento = getchar();
+            fgets(cadena, sizeof(cadena), stdin);
+            movimiento = extraerCaracterValido(cadena);
         }
     } while(bandera == 1);
     EscribirTablero(tablero, fila, columna, jugadorChar); ///Escribo en el tablero
@@ -249,3 +250,13 @@ int ObtenerCantidadDePartidas(){
     return cantPart;
 }
 
+char extraerCaracterValido(const char *cadena) {
+    while (*cadena != '\0') {
+        if (!isspace((unsigned char)*cadena)) { ///Busco el primer caracter útil (no espacio)
+            return *cadena;
+        }
+        cadena++;
+    }
+
+    return '\0';  /// No se encontró ningún carácter útil
+}

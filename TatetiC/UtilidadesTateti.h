@@ -53,5 +53,6 @@ int CasilleroVacio(char [][TAMLARGO], int, int);
 int OrdenarPuntosDescendente(void *, void *);
 void GenerarArchivoResumen(tLista *, tLista *);
 int ObtenerCantidadDePartidas();
+char extraerCaracterValido(const char*);
 
 #endif // UTILIDADESTATETI_H_INCLUDED
